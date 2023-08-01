@@ -3,7 +3,7 @@ package org.example.domain.model;
 public enum LoaiDat {
     A("A"),
     B("B"),
-    LOAI_C("C");
+    C("C");
 
     private String value;
 

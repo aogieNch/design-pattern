@@ -22,13 +22,11 @@ public class GiaoDichView extends JFrame {
 
     private GiaoDichController controller;
 
-    public GiaoDichView() {
+    public GiaoDichView(GiaoDichController controller) {
         setTitle("Test Add GiaoDichDat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 200);
         setLocationRelativeTo(null);
-
-        controller = new GiaoDichController();
 
         maGiaoDichField = new JTextField(10);
         ngayGiaoDichField = new JTextField(10);
@@ -37,6 +35,8 @@ public class GiaoDichView extends JFrame {
         loaiDatComboBox = new JComboBox<>(LoaiDat.values());
         maNguoiMoGioiField = new JTextField(10);
         addButton = new JButton("Add GiaoDichDat");
+
+        this.controller = controller;
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -74,8 +74,7 @@ public class GiaoDichView extends JFrame {
         int maNguoiMoGioi = Integer.parseInt(maNguoiMoGioiField.getText());
         LoaiDat loaiDat = (LoaiDat) loaiDatComboBox.getSelectedItem();
 
-        GiaoDichDat giaoDichDat = new GiaoDichDat(maGiaoDich, ngayGiaoDich, donGia, dienTich, maNguoiMoGioi, loaiDat);
-        controller.addGiaoDichDat(giaoDichDat);
+        controller.addGiaoDichDat(new GiaoDichDat(maGiaoDich, ngayGiaoDich, donGia, dienTich, maNguoiMoGioi, loaiDat));
 
         JOptionPane.showMessageDialog(this, "GiaoDichDat added successfully!");
 

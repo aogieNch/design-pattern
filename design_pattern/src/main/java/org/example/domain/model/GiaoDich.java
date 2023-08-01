@@ -17,6 +17,9 @@ public abstract class GiaoDich {
         this.nguoiMoGioi = nguoiMoGioi;
     }
 
+    public GiaoDich() {
+    }
+
     public int getMaGiaoDich() {
         return maGiaoDich;
     }
