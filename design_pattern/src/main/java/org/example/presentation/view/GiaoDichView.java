@@ -4,11 +4,14 @@ import org.example.domain.model.LoaiDat;
 import org.example.presentation.controller.GiaoDichController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GiaoDichView extends JFrame {
 
@@ -20,9 +23,16 @@ public class GiaoDichView extends JFrame {
     private final JTextField maNguoiMoGioiField;
     private JButton addButton, calculateButton, amountButton;
 
+    //Table GiaoDich
+    private List<GiaoDichDat> giaoDichDatList;
+//    private DefaultTableModel giaoDichDatTableModel;
+//    private JTable giaoDichDatTable;
+
     private GiaoDichController controller;
 
     public GiaoDichView(GiaoDichController controller) {
+        this.controller = controller;
+
         setTitle("Test Add GiaoDichDat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
@@ -34,11 +44,16 @@ public class GiaoDichView extends JFrame {
         dienTichField = new JTextField(10);
         loaiDatComboBox = new JComboBox<>(LoaiDat.values());
         maNguoiMoGioiField = new JTextField(10);
+
+        //Table
+        giaoDichDatList = new ArrayList<>();
+        controller.getGiaoDichDatByUserId(2).forEach(giaoDichDatList::add);
+        System.out.println("GiaoDichDatList: " + giaoDichDatList);
+
+        //Button
         addButton = new JButton("Add GiaoDichDat");
         calculateButton = new JButton("Calculate");
         amountButton = new JButton("Amount");
-
-        this.controller = controller;
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -61,6 +76,7 @@ public class GiaoDichView extends JFrame {
             }
         });
 
+        //Form
         JPanel contentPane = new JPanel(new BorderLayout());
         JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         formPanel.add(new JLabel("Ma Giao Dich:"));
@@ -76,6 +92,7 @@ public class GiaoDichView extends JFrame {
         formPanel.add(new JLabel("Ma Nguoi Mo Gioi:"));
         formPanel.add(maNguoiMoGioiField);
 
+        //Add to contentPane
         contentPane.add(formPanel, BorderLayout.CENTER);
         contentPane.add(addButton, BorderLayout.SOUTH);
         contentPane.add(calculateButton, BorderLayout.NORTH);
@@ -83,6 +100,35 @@ public class GiaoDichView extends JFrame {
 
         setContentPane(contentPane);
     }
+
+//    //Fetch all GiaoDichDat from the database and display them in the table
+//    private void fetchGiaoDichDat() {
+//        giaoDichDatList = controller.getAllGiaoDichDat();
+//
+//        // Create a table model and set the column names
+//        giaoDichDatTableModel = new DefaultTableModel();
+//        giaoDichDatTableModel.setColumnIdentifiers(new String[]{
+//                "Ma Giao Dich",
+//                "Ngay Giao Dich",
+//                "Don Gia",
+//                "Dien Tich",
+//                "Loai Dat"
+//        });
+//
+//        // Add the GiaoDichDat objects to the table model as rows
+//        for (GiaoDichDat giaoDichDat : giaoDichDatList) {
+//            giaoDichDatTableModel.addRow(new Object[]{
+//                    giaoDichDat.getMaGiaoDich(),
+//                    giaoDichDat.getNgayGiaoDich(),
+//                    giaoDichDat.getDonGia(),
+//                    giaoDichDat.getDienTich(),
+//                    giaoDichDat.getLoaiDat()
+//            });
+//        }
+//
+//        // Set the table model for the table
+//        giaoDichDatTable.setModel(giaoDichDatTableModel);
+//    }
 
     private void addGiaoDichDat() {
         int maGiaoDich = Integer.parseInt(maGiaoDichField.getText());

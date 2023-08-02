@@ -22,10 +22,6 @@ public class GiaoDichDat extends GiaoDich{
         return loaiDat;
     }
 
-    public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
-        giaoDichDAO.addGiaoDichDat(giaoDichDat);
-    }
-
     @Override
     public double thanhTien() {
         if (loaiDat == LoaiDat.A) {
@@ -34,4 +30,5 @@ public class GiaoDichDat extends GiaoDich{
             return getDienTich() * getDonGia();
         }
     }
+
 }

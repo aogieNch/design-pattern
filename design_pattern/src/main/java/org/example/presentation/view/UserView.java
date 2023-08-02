@@ -9,16 +9,11 @@ import org.example.persistence.GiaoDichGateWayImp;
 import org.example.presentation.controller.GiaoDichController;
 import org.example.presentation.controller.UserController;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 
 public class UserView extends JFrame {
 
@@ -99,7 +94,7 @@ public class UserView extends JFrame {
             GiaoDichView view = new GiaoDichView(controller);
             view.setVisible(true);
         } else {
-            System.out.println("Sai tên đăng nhập hoặc mật khẩu");
+            JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu");
         }
     }
 }

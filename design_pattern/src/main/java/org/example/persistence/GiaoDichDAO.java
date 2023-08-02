@@ -2,7 +2,12 @@ package org.example.persistence;
 
 import org.example.domain.model.GiaoDichDat;
 
+import java.util.List;
+
 public interface GiaoDichDAO {
+
+    //GetGiaoDich
+    List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich);
     void addGiaoDichDat(GiaoDichDat giaoDichDat);
 
     //Calculate Giao dich

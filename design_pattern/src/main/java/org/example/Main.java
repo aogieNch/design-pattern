@@ -24,14 +24,6 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-//                GiaoDichGateWay giaoDichGateWayImp = new GiaoDichGateWayImp();
-//                GiaoDichDAO giaoDichDAO = new GiaoDichDAOImp(giaoDichGateWayImp);
-//
-//                GiaoDichService giaoDichService = new GiaoDichServiceImp(giaoDichDAO);
-//
-//                GiaoDichController controller = new GiaoDichController(giaoDichService);
-//                GiaoDichView view = new GiaoDichView(controller);
-
                 UserGateWay userGateWay = new UserGateWayImp();
                 UserDAO userDAO = new UserDAOImp(userGateWay);
                 UserService userService = new UserServiceImp(userDAO);

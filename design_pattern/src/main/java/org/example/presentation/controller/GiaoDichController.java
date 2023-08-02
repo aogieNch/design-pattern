@@ -4,6 +4,8 @@ import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.service.GiaoDichService;
 
+import java.util.List;
+
 public class GiaoDichController {
     private final GiaoDichService giaoDichService;
     private GiaoDichDat giaoDichDat;
@@ -11,6 +13,11 @@ public class GiaoDichController {
 
     public GiaoDichController(GiaoDichService giaoDichService) {
         this.giaoDichService = giaoDichService;
+    }
+
+    //GetGiaoDich
+    public List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich) {
+        return giaoDichService.getGiaoDichDatByUserId(maNguoiGiaoDich);
     }
 
     //AddGiaoDich

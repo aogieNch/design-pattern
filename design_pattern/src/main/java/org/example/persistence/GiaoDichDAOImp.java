@@ -2,12 +2,21 @@ package org.example.persistence;
 
 import org.example.domain.model.GiaoDichDat;
 
+import java.util.List;
+
 public class GiaoDichDAOImp implements GiaoDichDAO {
     private GiaoDichGateWay giaoDichGateWay;
     public GiaoDichDAOImp(GiaoDichGateWay giaoDichGateWay) {
         this.giaoDichGateWay = giaoDichGateWay;
     }
 
+    //GetGiaoDich
+    @Override
+    public List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich) {
+        return giaoDichGateWay.getGiaoDichDatByUserId(maNguoiGiaoDich);
+    }
+
+    //AddGiaoDich
     @Override
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         giaoDichGateWay.addGiaoDichDat(giaoDichDat);
