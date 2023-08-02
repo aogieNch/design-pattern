@@ -1,6 +1,5 @@
 package org.example.presentation.view;
 import org.example.domain.model.GiaoDichDat;
-import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.LoaiDat;
 import org.example.presentation.controller.GiaoDichController;
 
@@ -8,27 +7,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class GiaoDichView extends JFrame {
 
-    private JTextField maGiaoDichField;
-    private JTextField ngayGiaoDichField;
-    private JTextField donGiaField;
-    private JTextField dienTichField;
-    private JComboBox<LoaiDat> loaiDatComboBox;
-    private JTextField maNguoiMoGioiField;
+    private final JTextField maGiaoDichField;
+    private final JTextField ngayGiaoDichField;
+    private final JTextField donGiaField;
+    private final JTextField dienTichField;
+    private final JComboBox<LoaiDat> loaiDatComboBox;
+    private final JTextField maNguoiMoGioiField;
     private JButton addButton;
-    private JButton calculateButton;
+    private JButton calculateButton, amountButton;
 
     private GiaoDichController controller;
 
     public GiaoDichView(GiaoDichController controller) {
         setTitle("Test Add GiaoDichDat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 200);
+        setSize(800, 400);
         setLocationRelativeTo(null);
 
         maGiaoDichField = new JTextField(10);
@@ -39,6 +37,7 @@ public class GiaoDichView extends JFrame {
         maNguoiMoGioiField = new JTextField(10);
         addButton = new JButton("Add GiaoDichDat");
         calculateButton = new JButton("Calculate");
+        amountButton = new JButton("Amount");
 
         this.controller = controller;
 
@@ -52,7 +51,14 @@ public class GiaoDichView extends JFrame {
         calculateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calculateGiaoDichDat();
+                calculateAvgGiaoDich();
+            }
+        });
+
+        amountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                amountGiaoDich();
             }
         });
 
@@ -74,6 +80,7 @@ public class GiaoDichView extends JFrame {
         contentPane.add(formPanel, BorderLayout.CENTER);
         contentPane.add(addButton, BorderLayout.SOUTH);
         contentPane.add(calculateButton, BorderLayout.NORTH);
+        contentPane.add(amountButton, BorderLayout.EAST);
 
         setContentPane(contentPane);
     }
@@ -99,16 +106,35 @@ public class GiaoDichView extends JFrame {
         maNguoiMoGioiField.setText("");
     }
 
-    private void calculateGiaoDichDat() {
+    private void calculateAvgGiaoDich() {
         int maNguoiGiaoDich = Integer.parseInt(maNguoiMoGioiField.getText());
-        float result = controller.calculateGiaoDichDat(maNguoiGiaoDich);
+        float resultDat = controller.calculateGiaoDichDat(maNguoiGiaoDich);
+        float resultNha = controller.calculateGiaoDichNha(maNguoiGiaoDich);
+        float resultAll = controller.calculateGiaoDich(maNguoiGiaoDich);
 
         // Format the result as a decimal number with two decimal places
-        String formattedResult = String.format("%,.0f tr", result);
+        String formattedResultDat = String.format("%,.0f tr", resultDat);
+        String formattedResultNha = String.format("%,.0f tr", resultNha);
+        String formattedResult = String.format("%,.0f tr", resultAll);
 
         // Display the formatted result in a JOptionPane message dialog
-        String message = "Tổng tiền giao dịch đất của người mô giới có mã " + maNguoiGiaoDich + " là: " + formattedResult;
-        JOptionPane.showMessageDialog(null, message);
-        System.out.println(message);
+        String title = "Tổng tiền giao dịch của người mô giới có mã " + maNguoiGiaoDich + " là: ";
+        String dat = "Giao dịch đất: " + formattedResultDat;
+        String nha = "Giao dịch nhà: " + formattedResultNha;
+        String all = "Tổng giao dịch: " + formattedResult;
+        JOptionPane.showMessageDialog(this,title + "\n" + dat + "\n" + nha + "\n" + all);
+    }
+
+    private void amountGiaoDich(){
+        int maNguoiGiaoDich = Integer.parseInt(maNguoiMoGioiField.getText());
+        int resultDat = controller.amountGiaoDichDat(maNguoiGiaoDich);
+        int resultNha = controller.amountGiaoDichNha(maNguoiGiaoDich);
+        int resultAll = controller.amountGiaoDich(maNguoiGiaoDich);
+
+        String title = "Số lượng giao dịch của người mô giới có mã " + maNguoiGiaoDich + " là: ";
+        String dat = "Giao dịch đất: " + resultDat;
+        String nha = "Giao dịch nhà: " + resultNha;
+        String all = "Tổng giao dịch: " + resultAll;
+        JOptionPane.showMessageDialog(this,title + "\n" + dat + "\n" + nha + "\n" + all);
     }
 }

@@ -1,14 +1,14 @@
-package org.example.domain.command;
+package org.example.domain.command.calculateGiaoDich;
 
-import org.example.domain.model.GiaoDichDat;
+import org.example.domain.command.Command;
 import org.example.persistence.GiaoDichDAO;
 
-public class CalculateGiaoDichDat implements Command {
+public class CalculateAvgGiaoDichNha implements Command {
     private GiaoDichDAO giaoDichDAO;
     private int maNguoiGiaoDich;
     private float result;
 
-    public CalculateGiaoDichDat(GiaoDichDAO giaoDichDAO, int maNguoiGiaoDich) {
+    public CalculateAvgGiaoDichNha(GiaoDichDAO giaoDichDAO, int maNguoiGiaoDich) {
         this.giaoDichDAO = giaoDichDAO;
         this.maNguoiGiaoDich = maNguoiGiaoDich;
     }
@@ -18,6 +18,6 @@ public class CalculateGiaoDichDat implements Command {
     }
     @Override
     public void execute() {
-        result = giaoDichDAO.calculateGiaoDichDat(maNguoiGiaoDich);
+        result = giaoDichDAO.calculateGiaoDichNha(maNguoiGiaoDich);
     }
 }

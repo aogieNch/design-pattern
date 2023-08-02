@@ -1,9 +1,15 @@
 package org.example.domain.model.service;
 
 import org.example.domain.model.GiaoDichDat;
-import org.example.domain.model.GiaoDichNha;
 
 public interface GiaoDichService {
     void addGiaoDichDat(GiaoDichDat giaoDichDat);
-    float calculateGiaoDichDat(int maNguoiGiaoDich);
+    float calculateAvgGiaoDichDat(int maNguoiGiaoDich);
+    float calculateAvgGiaoDichNha(int maNguoiGiaoDich);
+    float calculateAvgGiaoDich(int maNguoiGiaoDich);
+
+    //Amount Giao dich
+    int amountGiaoDichDat(int maNguoiGiaoDich);
+    int amountGiaoDichNha(int maNguoiGiaoDich);
+    int amountGiaoDich(int maNguoiGiaoDich);
 }
