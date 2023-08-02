@@ -3,11 +3,11 @@ package org.example.persistence;
 import org.example.domain.model.GiaoDichDat;
 
 public class GiaoDichDAOImp implements GiaoDichDAO {
-
     private GiaoDichGateWay giaoDichGateWay;
     public GiaoDichDAOImp(GiaoDichGateWay giaoDichGateWay) {
         this.giaoDichGateWay = giaoDichGateWay;
     }
+
     @Override
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         giaoDichGateWay.addGiaoDichDat(giaoDichDat);

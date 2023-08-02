@@ -1,6 +1,6 @@
 package org.example.domain.model.service;
 
-import org.example.domain.command.AddGiaoDichDat;
+import org.example.domain.command.addGiaoDich.AddGiaoDichDat;
 import org.example.domain.command.calculateGiaoDich.CalculateAvgGiaoDich;
 import org.example.domain.command.calculateGiaoDich.CalculateAvgGiaoDichDat;
 import org.example.domain.command.Command;
@@ -10,7 +10,7 @@ import org.example.persistence.GiaoDichDAO;
 
 public class GiaoDichServiceImp implements GiaoDichService {
 
-    private GiaoDichDAO giaoDichDAO;
+    private final GiaoDichDAO giaoDichDAO;
 
     public GiaoDichServiceImp(GiaoDichDAO giaoDichDAO) {
         this.giaoDichDAO = giaoDichDAO;
@@ -25,21 +25,21 @@ public class GiaoDichServiceImp implements GiaoDichService {
     //CalculateAvgGiaoDichDat
     @Override
     public float calculateAvgGiaoDichDat(int maNguoiGiaoDich) {
-        Command calculateGiaoDichDat = new CalculateAvgGiaoDichDat(giaoDichDAO, maNguoiGiaoDich);
+        CalculateAvgGiaoDichDat calculateGiaoDichDat = new CalculateAvgGiaoDichDat(giaoDichDAO, maNguoiGiaoDich);
         calculateGiaoDichDat.execute();
-        return ((CalculateAvgGiaoDichDat) calculateGiaoDichDat).getResult();
+        return calculateGiaoDichDat.getResult();
     }
     @Override
     public float calculateAvgGiaoDichNha(int maNguoiGiaoDich) {
-        Command calculateGiaoDichNha = new CalculateAvgGiaoDichNha(giaoDichDAO, maNguoiGiaoDich);
+        CalculateAvgGiaoDichNha calculateGiaoDichNha = new CalculateAvgGiaoDichNha(giaoDichDAO, maNguoiGiaoDich);
         calculateGiaoDichNha.execute();
-        return ((CalculateAvgGiaoDichNha) calculateGiaoDichNha).getResult();
+        return calculateGiaoDichNha.getResult();
     }
     @Override
     public float calculateAvgGiaoDich(int maNguoiGiaoDich) {
-        Command calculateGiaoDich = new CalculateAvgGiaoDich(giaoDichDAO, maNguoiGiaoDich);
+        CalculateAvgGiaoDich calculateGiaoDich = new CalculateAvgGiaoDich(giaoDichDAO, maNguoiGiaoDich);
         calculateGiaoDich.execute();
-        return ((CalculateAvgGiaoDich) calculateGiaoDich).getResult();
+        return calculateGiaoDich.getResult();
     }
 
     //AmountGiaoDich

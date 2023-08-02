@@ -18,8 +18,7 @@ public class GiaoDichView extends JFrame {
     private final JTextField dienTichField;
     private final JComboBox<LoaiDat> loaiDatComboBox;
     private final JTextField maNguoiMoGioiField;
-    private JButton addButton;
-    private JButton calculateButton, amountButton;
+    private JButton addButton, calculateButton, amountButton;
 
     private GiaoDichController controller;
 

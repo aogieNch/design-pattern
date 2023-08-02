@@ -15,4 +15,9 @@ public interface GiaoDichGateWay {
     int amountGiaoDichNha(int maNguoiGiaoDich);
     int amountGiaoDich(int maNguoiGiaoDich);
 
+    //GetGiaoDich
+//    void getGiaoDichDat(int maNguoiGiaoDich);
+//    void getGiaoDichNha(int maNguoiGiaoDich);
+//    void getGiaoDich(int maNguoiGiaoDich);
+
 }

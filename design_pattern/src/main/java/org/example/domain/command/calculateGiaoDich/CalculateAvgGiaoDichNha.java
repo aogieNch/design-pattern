@@ -4,8 +4,8 @@ import org.example.domain.command.Command;
 import org.example.persistence.GiaoDichDAO;
 
 public class CalculateAvgGiaoDichNha implements Command {
-    private GiaoDichDAO giaoDichDAO;
-    private int maNguoiGiaoDich;
+    private final GiaoDichDAO giaoDichDAO;
+    private final int maNguoiGiaoDich;
     private float result;
 
     public CalculateAvgGiaoDichNha(GiaoDichDAO giaoDichDAO, int maNguoiGiaoDich) {

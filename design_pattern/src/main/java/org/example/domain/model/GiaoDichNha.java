@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class GiaoDichNha extends GiaoDich {
     private String diaChi;
-    private LoaiNha loaiNha;
+    private final LoaiNha loaiNha;
 
     public GiaoDichNha(int maGiaoDich, LocalDate ngayGiaoDich, double donGia, double dienTich, int nguoiMoGioi, String diaChi, LoaiNha loaiNha) {
         super(maGiaoDich, ngayGiaoDich, donGia, dienTich, nguoiMoGioi);

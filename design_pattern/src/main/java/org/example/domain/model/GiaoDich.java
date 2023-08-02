@@ -24,40 +24,20 @@ public abstract class GiaoDich {
         return maGiaoDich;
     }
 
-    public void setMaGiaoDich(int maGiaoDich) {
-        this.maGiaoDich = maGiaoDich;
-    }
-
     public LocalDate getNgayGiaoDich() {
         return ngayGiaoDich;
-    }
-
-    public void setNgayGiaoDich(LocalDate ngayGiaoDich) {
-        this.ngayGiaoDich = ngayGiaoDich;
     }
 
     public double getDonGia() {
         return donGia;
     }
 
-    public void setDonGia(double donGia) {
-        this.donGia = donGia;
-    }
-
     public double getDienTich() {
         return dienTich;
     }
 
-    public void setDienTich(double dienTich) {
-        this.dienTich = dienTich;
-    }
-
     public int getNguoiMoGioi() {
         return nguoiMoGioi;
-    }
-
-    public void setNguoiMoGioi(int nguoiMoGioi) {
-        this.nguoiMoGioi = nguoiMoGioi;
     }
 
     public abstract double thanhTien();

@@ -5,7 +5,7 @@ import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.service.GiaoDichService;
 
 public class GiaoDichController {
-    private GiaoDichService giaoDichService;
+    private final GiaoDichService giaoDichService;
     private GiaoDichDat giaoDichDat;
     private GiaoDichNha giaoDichNha;
 
@@ -13,6 +13,7 @@ public class GiaoDichController {
         this.giaoDichService = giaoDichService;
     }
 
+    //AddGiaoDich
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         giaoDichService.addGiaoDichDat(giaoDichDat);
     }

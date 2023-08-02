@@ -150,4 +150,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         }
         return result;
     }
+
+    //GetGiaoDich
 }

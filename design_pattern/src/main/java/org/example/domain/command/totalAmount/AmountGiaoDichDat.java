@@ -4,8 +4,9 @@ import org.example.domain.command.Command;
 import org.example.persistence.GiaoDichDAO;
 
 public class AmountGiaoDichDat implements Command {
-    private GiaoDichDAO giaoDichDAO;
-    private int maNguoiGiaoDich, result;
+    private final GiaoDichDAO giaoDichDAO;
+    private final int maNguoiGiaoDich;
+    private int result;
 
     public AmountGiaoDichDat(GiaoDichDAO giaoDichDAO, int maNguoiGiaoDich) {
         this.giaoDichDAO = giaoDichDAO;
