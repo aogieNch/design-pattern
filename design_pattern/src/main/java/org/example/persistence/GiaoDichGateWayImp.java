@@ -1,6 +1,7 @@
 package org.example.persistence;
 
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.GiaoDichNha;
 
 import java.sql.*;
 import java.util.List;
@@ -48,22 +49,19 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
     }
 
     @Override
-    public void updateGiaoDichDat(GiaoDichDat giaoDichDat) {
-
-    }
-
-    @Override
-    public void deleteGiaoDichDat(GiaoDichDat giaoDichDat) {
-
-    }
-
-    @Override
-    public GiaoDichDat getGiaoDichDatById(int id) {
-        return null;
-    }
-
-    @Override
-    public List<GiaoDichDat> getAllGiaoDichDat() {
-        return null;
+    public float calculateGiaoDichDat(int maNguoiGiaoDich) {
+        float result = 0.0f;
+        try {
+            String sql = "SELECT SUM(ThanhTien) FROM GiaoDich WHERE NguoiMoGioi = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, maNguoiGiaoDich);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                result = rs.getFloat(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

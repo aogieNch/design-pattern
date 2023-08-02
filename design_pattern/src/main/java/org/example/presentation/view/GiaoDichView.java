@@ -1,5 +1,6 @@
 package org.example.presentation.view;
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.LoaiDat;
 import org.example.presentation.controller.GiaoDichController;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -19,6 +21,7 @@ public class GiaoDichView extends JFrame {
     private JComboBox<LoaiDat> loaiDatComboBox;
     private JTextField maNguoiMoGioiField;
     private JButton addButton;
+    private JButton calculateButton;
 
     private GiaoDichController controller;
 
@@ -35,6 +38,7 @@ public class GiaoDichView extends JFrame {
         loaiDatComboBox = new JComboBox<>(LoaiDat.values());
         maNguoiMoGioiField = new JTextField(10);
         addButton = new JButton("Add GiaoDichDat");
+        calculateButton = new JButton("Calculate");
 
         this.controller = controller;
 
@@ -42,6 +46,13 @@ public class GiaoDichView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addGiaoDichDat();
+            }
+        });
+
+        calculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calculateGiaoDichDat();
             }
         });
 
@@ -62,6 +73,7 @@ public class GiaoDichView extends JFrame {
 
         contentPane.add(formPanel, BorderLayout.CENTER);
         contentPane.add(addButton, BorderLayout.SOUTH);
+        contentPane.add(calculateButton, BorderLayout.NORTH);
 
         setContentPane(contentPane);
     }
@@ -85,5 +97,18 @@ public class GiaoDichView extends JFrame {
         dienTichField.setText("");
         loaiDatComboBox.setSelectedIndex(0);
         maNguoiMoGioiField.setText("");
+    }
+
+    private void calculateGiaoDichDat() {
+        int maNguoiGiaoDich = Integer.parseInt(maNguoiMoGioiField.getText());
+        float result = controller.calculateGiaoDichDat(maNguoiGiaoDich);
+
+        // Format the result as a decimal number with two decimal places
+        String formattedResult = String.format("%,.0f tr", result);
+
+        // Display the formatted result in a JOptionPane message dialog
+        String message = "Tổng tiền giao dịch đất của người mô giới có mã " + maNguoiGiaoDich + " là: " + formattedResult;
+        JOptionPane.showMessageDialog(null, message);
+        System.out.println(message);
     }
 }
