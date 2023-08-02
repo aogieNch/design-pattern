@@ -3,17 +3,17 @@ package org.example.presentation.controller;
 import org.example.domain.command.AddGiaoDichDat;
 import org.example.domain.command.Command;
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.service.GiaoDichService;
 
 public class GiaoDichController {
+    private GiaoDichService giaoDichService;
     private GiaoDichDat giaoDichDat;
-    private Command addGiaoDichDatCommand;
 
-    public GiaoDichController(GiaoDichDat giaoDichDat) {
-        this.giaoDichDat = giaoDichDat;
-        this.addGiaoDichDatCommand = new AddGiaoDichDat(giaoDichDat);
+    public GiaoDichController(GiaoDichService giaoDichService) {
+        this.giaoDichService = giaoDichService;
     }
 
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
-        addGiaoDichDatCommand.execute();
+        giaoDichService.addGiaoDichDat(giaoDichDat);
     }
 }

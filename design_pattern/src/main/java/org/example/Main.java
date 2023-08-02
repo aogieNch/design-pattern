@@ -1,8 +1,11 @@
 package org.example;
 
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.service.GiaoDichService;
+import org.example.domain.model.service.GiaoDichServiceImp;
 import org.example.persistence.GiaoDichDAO;
 import org.example.persistence.GiaoDichDAOImp;
+import org.example.persistence.GiaoDichGateWay;
 import org.example.persistence.GiaoDichGateWayImp;
 import org.example.presentation.controller.GiaoDichController;
 import org.example.presentation.view.GiaoDichView;
@@ -14,13 +17,14 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                GiaoDichGateWayImp giaoDichGateWayImp = new GiaoDichGateWayImp();
-                    GiaoDichDAOImp giaoDichDAO = new GiaoDichDAOImp(giaoDichGateWayImp);
-                    GiaoDichDat giaoDichDat = new GiaoDichDat(giaoDichDAO);
+                GiaoDichGateWay giaoDichGateWayImp = new GiaoDichGateWayImp();
+                GiaoDichDAO giaoDichDAO = new GiaoDichDAOImp(giaoDichGateWayImp);
 
-                    GiaoDichController giaoDichController = new GiaoDichController(giaoDichDat);
-                    GiaoDichView giaoDichView = new GiaoDichView(giaoDichController);
-                    giaoDichView.setVisible(true);
+                GiaoDichService giaoDichService = new GiaoDichServiceImp(giaoDichDAO);
+
+                GiaoDichController controller = new GiaoDichController(giaoDichService);
+                GiaoDichView view = new GiaoDichView(controller);
+                view.setVisible(true);
             }
         });
     }
