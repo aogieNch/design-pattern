@@ -4,6 +4,7 @@ import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.LoaiDat;
 import org.example.domain.model.LoaiNha;
+import org.example.observer.DataObserver;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.List;
 public class GiaoDichGateWayImp implements GiaoDichGateWay {
 
     private Connection connection;
+    private List<DataObserver> observers = new ArrayList<>();
 
     public GiaoDichGateWayImp() {
         String dbUrl = "jdbc:sqlserver://localhost:1433;databaseName=quanlygiaodich;integratedSecurity=true;trustServerCertificate=true;";
@@ -25,6 +27,16 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         }
     }
 
+    @Override
+    public void registerObserver(DataObserver observer){
+        observers.add(observer);
+    }
+
+    public void notifyObservers() {
+        for (DataObserver observer : observers) {
+            observer.onDataChanged();
+        }
+    }
     //Fetch data from database
     @Override
     public List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich) {
@@ -127,6 +139,7 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        notifyObservers();
     }
 
     @Override
@@ -155,6 +168,7 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        notifyObservers();
     }
 
     //Update Giao dich
@@ -183,6 +197,7 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        notifyObservers();
     }
 
     //Calculate Giao dich
@@ -290,5 +305,4 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         return result;
     }
 
-    //GetGiaoDich
 }

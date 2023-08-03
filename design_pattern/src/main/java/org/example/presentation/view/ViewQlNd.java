@@ -4,12 +4,7 @@ import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.LoaiDat;
 import org.example.domain.model.LoaiNha;
-import org.example.domain.model.service.GiaoDichService;
-import org.example.domain.model.service.GiaoDichServiceImp;
-import org.example.persistence.GiaoDichDAO;
-import org.example.persistence.GiaoDichDAOImp;
-import org.example.persistence.GiaoDichGateWay;
-import org.example.persistence.GiaoDichGateWayImp;
+import org.example.observer.DataObserver;
 import org.example.presentation.controller.GiaoDichController;
 
 import java.awt.*;
@@ -25,7 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ViewQlNd extends JFrame {
+public class ViewQlNd extends JFrame implements DataObserver {
 
     private JPanel contentPane;
     private JTextField textField_NgayGD;
@@ -72,7 +67,6 @@ public class ViewQlNd extends JFrame {
         comboBox_LoaiGD.setBounds(66, 7, 85, 22);
         contentPane.add(comboBox_LoaiGD);
 
-
         textField_NgayGD = new JTextField();
         textField_NgayGD.setBounds(237, 8, 109, 20);
         contentPane.add(textField_NgayGD);
@@ -112,7 +106,6 @@ public class ViewQlNd extends JFrame {
         comboBox_LoaiDat = new JComboBox<>(LoaiDat.values());
         comboBox_LoaiDat.setBounds(66, 36, 52, 22);
         contentPane.add(comboBox_LoaiDat);
-
 
         textField_Id = new JTextField();
         textField_Id.setBounds(167, 38, 40, 20);
@@ -501,6 +494,13 @@ public class ViewQlNd extends JFrame {
         // Update the table with the retrieved data
         updateTableDatData(giaoDichDatList);
         updateTableNhaData(giaoDichNhaList);
+
+        comboBox_LoaiGD.setSelectedIndex(0);
+    }
+
+    @Override
+    public void onDataChanged() {
+        loadData(); // Update the view when data changes
     }
 
     private void calculateAvgGiaoDich() {

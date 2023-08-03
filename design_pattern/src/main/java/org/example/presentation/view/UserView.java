@@ -115,12 +115,10 @@ public class UserView extends JFrame {
         GiaoDichService giaoDichService = new GiaoDichServiceImp(giaoDichDAO);
         GiaoDichController giaoDichController = new GiaoDichController(giaoDichService, userId);
 
-        // Assuming the GiaoDichController has a method to load data based on the userId
-        giaoDichController.getGiaoDichDatByUserId(userId);
-        giaoDichController.getGiaoDichNhaByUserId(userId);
-
-
         ViewQlNd view = new ViewQlNd(giaoDichController);
+
+        giaoDichGateWayImp.registerObserver(view);
+
         view.setVisible(true);
     }
 

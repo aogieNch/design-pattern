@@ -27,4 +27,5 @@ public interface GiaoDichDAO {
     int amountGiaoDichDat(int maNguoiGiaoDich);
     int amountGiaoDichNha(int maNguoiGiaoDich);
     int amountGiaoDich(int maNguoiGiaoDich);
+
 }

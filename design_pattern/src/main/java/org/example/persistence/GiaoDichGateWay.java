@@ -2,6 +2,7 @@ package org.example.persistence;
 
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
+import org.example.observer.DataObserver;
 
 import java.util.List;
 
@@ -26,4 +27,7 @@ public interface GiaoDichGateWay {
     int amountGiaoDichDat(int maNguoiGiaoDich);
     int amountGiaoDichNha(int maNguoiGiaoDich);
     int amountGiaoDich(int maNguoiGiaoDich);
+
+    //Observer
+    void registerObserver(DataObserver observer);
 }
