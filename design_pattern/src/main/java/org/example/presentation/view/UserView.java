@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class UserView extends JFrame {
 
@@ -70,32 +71,58 @@ public class UserView extends JFrame {
         btn_DangNhap.setBounds(164, 214, 105, 23);
         contentPane.add(btn_DangNhap);
 
-        btn_DangNhap.addActionListener(new ActionListener() {
+        ActionListener dangNhapListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 login();
             }
+        };
+
+        // Add the ActionListener to the "Đăng Nhập" button
+        btn_DangNhap.addActionListener(dangNhapListener);
+
+        // Add an action listener to the root pane of the JFrame to handle the Enter key
+        getRootPane().setDefaultButton(btn_DangNhap);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
+        getRootPane().getActionMap().put("enter", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dangNhapListener.actionPerformed(e);
+            }
         });
+        setLocationRelativeTo(null);
     }
 
+    // Modify login() method to retrieve the user ID and pass it to loadData()
     private void login() {
         String username = textField_TenDangNhap.getText();
         String password = textField_MkDangNhap.getText();
-        controller.checkLogin(username, password);
 
-        if (controller.checkLogin(username, password)) {
+        boolean loginSuccess = controller.checkLogin(username, password);
+        if (loginSuccess) {
+            int userId = controller.getMaNguoiMoGioi(username); // Replace this with the correct method to get the user ID by username
             this.setVisible(false);
-            GiaoDichGateWay giaoDichGateWayImp = new GiaoDichGateWayImp();
-            GiaoDichDAO giaoDichDAO = new GiaoDichDAOImp(giaoDichGateWayImp);
-
-            GiaoDichService giaoDichService = new GiaoDichServiceImp(giaoDichDAO);
-
-            GiaoDichController controller = new GiaoDichController(giaoDichService);
-            GiaoDichView view = new GiaoDichView(controller);
-            view.setVisible(true);
+            loadData(userId);
         } else {
             JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu");
         }
     }
+
+    // Modify loadData() method to accept the userId as a parameter
+    private void loadData(int userId) {
+        GiaoDichGateWay giaoDichGateWayImp = new GiaoDichGateWayImp();
+        GiaoDichDAO giaoDichDAO = new GiaoDichDAOImp(giaoDichGateWayImp);
+        GiaoDichService giaoDichService = new GiaoDichServiceImp(giaoDichDAO);
+        GiaoDichController giaoDichController = new GiaoDichController(giaoDichService, userId);
+
+        // Assuming the GiaoDichController has a method to load data based on the userId
+        giaoDichController.getGiaoDichDatByUserId(userId);
+        giaoDichController.getGiaoDichNhaByUserId(userId);
+
+
+        ViewQlNd view = new ViewQlNd(giaoDichController);
+        view.setVisible(true);
+    }
+
 }
 

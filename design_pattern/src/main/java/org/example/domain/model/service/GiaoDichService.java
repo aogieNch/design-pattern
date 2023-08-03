@@ -12,6 +12,10 @@ public interface GiaoDichService {
 
     //AddGiaoDich
     void addGiaoDichDat(GiaoDichDat giaoDichDat);
+    void addGiaoDichNha(GiaoDichNha giaoDichNha);
+
+    //UpdateGiaoDich
+    void updateGiaoDichDat(GiaoDichDat giaoDichDat);
 
     //CalculateAvgGiaoDich
     float calculateAvgGiaoDichDat(int maNguoiGiaoDich);

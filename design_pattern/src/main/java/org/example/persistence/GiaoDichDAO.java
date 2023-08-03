@@ -10,7 +10,13 @@ public interface GiaoDichDAO {
     //GetGiaoDich
     List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich);
     List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich);
+
+    //AddGiaoDich
     void addGiaoDichDat(GiaoDichDat giaoDichDat);
+    void addGiaoDichNha(GiaoDichNha giaoDichNha);
+
+    //UpdateGiaoDich
+    void updateGiaoDichDat(GiaoDichDat giaoDichDat);
 
     //Calculate Giao dich
     float calculateGiaoDichDat(int maNguoiGiaoDich);

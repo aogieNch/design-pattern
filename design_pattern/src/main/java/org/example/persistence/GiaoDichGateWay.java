@@ -9,7 +9,13 @@ public interface GiaoDichGateWay {
     //GetGiaoDich
     List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich);
     List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich);
+
+    //AddGiaoDich
     void addGiaoDichDat(GiaoDichDat giaoDichDat);
+    void addGiaoDichNha(GiaoDichNha giaoDichNha);
+
+    //UpdateGiaoDich
+    void updateGiaoDichDat(GiaoDichDat giaoDichDat);
 
     //Calulate Giao dich
     float calculateGiaoDichDat(int maNguoiGiaoDich);

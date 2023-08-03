@@ -13,4 +13,8 @@ public class UserController {
         return userService.checkLogin(username, password);
     }
 
+    public int getMaNguoiMoGioi(String username) {
+        return userService.getMaNguoiMoGioi(username);
+    }
+
 }

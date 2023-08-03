@@ -12,4 +12,9 @@ public class UserServiceImp implements UserService {
     public boolean checkLogin(String username, String password) {
         return userDAO.login(username, password);
     }
+
+    @Override
+    public int getMaNguoiMoGioi(String username) {
+        return userDAO.getMaNguoiMoGioi(username);
+    }
 }

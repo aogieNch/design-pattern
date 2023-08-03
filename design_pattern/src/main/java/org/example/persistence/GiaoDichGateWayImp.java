@@ -101,6 +101,7 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         return giaoDichList;
     }
 
+    //AddGiaoDich
     @Override
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         try {
@@ -123,6 +124,62 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
             insertGiaoDichDatStmt.executeUpdate();
 
             System.out.println("Thêm giao dịch đất thành công.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addGiaoDichNha(GiaoDichNha giaoDichNha) {
+        try {
+            // Thêm dữ liệu vào bảng GiaoDich
+            String insertGiaoDichSql = "INSERT INTO GiaoDich (MaGiaoDich, NgayGiaoDich, DonGia, DienTich, ThanhTien, NguoiMoGioi) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement insertGiaoDichStmt = connection.prepareStatement(insertGiaoDichSql, Statement.RETURN_GENERATED_KEYS);
+            insertGiaoDichStmt.setInt(1, giaoDichNha.getMaGiaoDich());
+            insertGiaoDichStmt.setDate(2, Date.valueOf(giaoDichNha.getNgayGiaoDich()));
+            insertGiaoDichStmt.setDouble(3, giaoDichNha.getDonGia());
+            insertGiaoDichStmt.setDouble(4, giaoDichNha.getDienTich());
+            insertGiaoDichStmt.setDouble(5, giaoDichNha.thanhTien());
+            insertGiaoDichStmt.setString(6, String.valueOf(giaoDichNha.getNguoiMoGioi()));
+            insertGiaoDichStmt.executeUpdate();
+
+            // Thêm dữ liệu vào bảng GiaoDichNha
+            String insertGiaoDichNhaSql = "INSERT INTO GiaoDichNha (DiaChi, MaGiaoDich, LoaiNha) VALUES (?, ?, ?)";
+            PreparedStatement insertGiaoDichNhaStmt = connection.prepareStatement(insertGiaoDichNhaSql);
+            insertGiaoDichNhaStmt.setString(1, giaoDichNha.getDiaChi());
+            insertGiaoDichNhaStmt.setInt(2, giaoDichNha.getMaGiaoDich());
+            insertGiaoDichNhaStmt.setInt(3, giaoDichNha.getLoaiNha().ordinal() + 1);
+            insertGiaoDichNhaStmt.executeUpdate();
+
+            System.out.println("Thêm giao dịch Nha thành công.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Update Giao dich
+    @Override
+    public void updateGiaoDichDat(GiaoDichDat giaoDichDat) {
+        try {
+            // Cập nhật dữ liệu trong bảng GiaoDich
+            String updateGiaoDichSql = "UPDATE GiaoDich SET NgayGiaoDich = ?, DonGia = ?, DienTich = ?, ThanhTien = ?, NguoiMoGioi = ? WHERE MaGiaoDich = ?";
+            PreparedStatement updateGiaoDichStmt = connection.prepareStatement(updateGiaoDichSql);
+            updateGiaoDichStmt.setDate(1, Date.valueOf(giaoDichDat.getNgayGiaoDich()));
+            updateGiaoDichStmt.setDouble(2, giaoDichDat.getDonGia());
+            updateGiaoDichStmt.setDouble(3, giaoDichDat.getDienTich());
+            updateGiaoDichStmt.setDouble(4, giaoDichDat.thanhTien());
+            updateGiaoDichStmt.setString(5, String.valueOf(giaoDichDat.getNguoiMoGioi()));
+            updateGiaoDichStmt.setInt(6, giaoDichDat.getMaGiaoDich());
+            updateGiaoDichStmt.executeUpdate();
+
+            // Cập nhật dữ liệu trong bảng GiaoDichDat
+            String updateGiaoDichDatSql = "UPDATE GiaoDichDat SET LoaiDat = ? WHERE MaGiaoDich = ?";
+            PreparedStatement updateGiaoDichDatStmt = connection.prepareStatement(updateGiaoDichDatSql);
+            updateGiaoDichDatStmt.setInt(1, giaoDichDat.getLoaiDat().ordinal() + 1);
+            updateGiaoDichDatStmt.setInt(2, giaoDichDat.getMaGiaoDich());
+            updateGiaoDichDatStmt.executeUpdate();
+
+            System.out.println("Cập nhật giao dịch đất thành công.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

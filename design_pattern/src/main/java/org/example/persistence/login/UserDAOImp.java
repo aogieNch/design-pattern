@@ -13,4 +13,10 @@ public class UserDAOImp implements UserDAO {
     public boolean login(String username, String password) {
         return userGateWay.login(username, password);
     }
+
+    //Get MaNguoiMoGioi
+    @Override
+    public int getMaNguoiMoGioi(String username) {
+        return userGateWay.getMaNguoiMoGioi(username);
+    }
 }

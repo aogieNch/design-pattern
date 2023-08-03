@@ -33,4 +33,21 @@ public class UserGateWayImp implements UserGateWay {
         }
         return isValid;
     }
+
+    @Override
+    public int getMaNguoiMoGioi(String username) {
+        int maNguoiMoGioi = 0;
+        try {
+            String sql = "SELECT MaNguoiMoGioi FROM NguoiMoGioi WHERE TenDangNhap = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                maNguoiMoGioi = rs.getInt("MaNguoiMoGioi");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return maNguoiMoGioi;
+    }
 }

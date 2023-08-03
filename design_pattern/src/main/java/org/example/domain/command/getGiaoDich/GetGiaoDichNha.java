@@ -9,6 +9,7 @@ import java.util.List;
 public class GetGiaoDichNha implements Command {
     private final GiaoDichDAO giaoDichDAO;
     private int maNguoiGiaoDich;
+    private List<GiaoDichNha> giaoDichNhaList;
 
     public GetGiaoDichNha(GiaoDichDAO giaoDichDAO, int maNguoiGiaoDich) {
         this.giaoDichDAO = giaoDichDAO;
@@ -17,6 +18,10 @@ public class GetGiaoDichNha implements Command {
 
     @Override
     public void execute() {
-        List<GiaoDichNha> giaoDichDatList = giaoDichDAO.getGiaoDichNhaByUserId(maNguoiGiaoDich);
+        giaoDichNhaList = giaoDichDAO.getGiaoDichNhaByUserId(maNguoiGiaoDich);
+    }
+
+    public List<GiaoDichNha> getGiaoDichNhaList() {
+        return giaoDichNhaList;
     }
 }

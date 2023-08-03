@@ -10,9 +10,15 @@ public class GiaoDichController {
     private final GiaoDichService giaoDichService;
     private GiaoDichDat giaoDichDat;
     private GiaoDichNha giaoDichNha;
+    private int maNguoiGiaoDich;
 
-    public GiaoDichController(GiaoDichService giaoDichService) {
+    public GiaoDichController(GiaoDichService giaoDichService, int maNguoiGiaoDich) {
+        this.maNguoiGiaoDich = maNguoiGiaoDich;
         this.giaoDichService = giaoDichService;
+    }
+
+    public int getMaNguoiGiaoDich() {
+        return maNguoiGiaoDich;
     }
 
     //GetGiaoDich
@@ -26,6 +32,15 @@ public class GiaoDichController {
     //AddGiaoDich
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         giaoDichService.addGiaoDichDat(giaoDichDat);
+    }
+
+    public void addGiaoDichNha(GiaoDichNha giaoDichNha) {
+        giaoDichService.addGiaoDichNha(giaoDichNha);
+    }
+
+    //UpdateGiaoDich
+    public void updateGiaoDichDat(GiaoDichDat giaoDichDat) {
+        giaoDichService.updateGiaoDichDat(giaoDichDat);
     }
 
     //CalculateAvgGiaoDich
