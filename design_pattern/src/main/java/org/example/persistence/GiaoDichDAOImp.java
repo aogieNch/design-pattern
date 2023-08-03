@@ -1,6 +1,7 @@
 package org.example.persistence;
 
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.GiaoDichNha;
 
 import java.util.List;
 
@@ -14,6 +15,10 @@ public class GiaoDichDAOImp implements GiaoDichDAO {
     @Override
     public List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich) {
         return giaoDichGateWay.getGiaoDichDatByUserId(maNguoiGiaoDich);
+    }
+    @Override
+    public List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich) {
+        return giaoDichGateWay.getGiaoDichNhaByUserId(maNguoiGiaoDich);
     }
 
     //AddGiaoDich

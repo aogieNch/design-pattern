@@ -1,12 +1,14 @@
 package org.example.domain.model.service;
 
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.GiaoDichNha;
 
 import java.util.List;
 
 public interface GiaoDichService {
     //GetGiaoDich
     List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich);
+    List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich);
 
     //AddGiaoDich
     void addGiaoDichDat(GiaoDichDat giaoDichDat);

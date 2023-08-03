@@ -1,7 +1,9 @@
 package org.example.persistence;
 
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.LoaiDat;
+import org.example.domain.model.LoaiNha;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -61,6 +63,44 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         }
         return giaoDichList;
     }
+    @Override
+    public List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich) {
+        List<GiaoDichNha> giaoDichList = new ArrayList<>();
+        try {
+            String sql = "SELECT GiaoDich.MaGiaoDich, GiaoDich.NgayGiaoDich, GiaoDich.DonGia, GiaoDich.DienTich, LoaiNha.TenLoaiNha, GiaoDichNha.DiaChi, GiaoDich.ThanhTien " +
+                    "FROM ((GiaoDich " +
+                    "INNER JOIN GiaoDichNha ON GiaoDich.MaGiaoDich = GiaoDichNha.MaGiaoDich) " +
+                    "INNER JOIN LoaiNha ON GiaoDichNha.LoaiNha = LoaiNha.MaLoaiNha) " +
+                    "WHERE GiaoDich.NguoiMoGioi = ?";
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, maNguoiGiaoDich);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int maGiaoDich = rs.getInt("MaGiaoDich");
+                LocalDate ngayGiaoDich = rs.getDate("NgayGiaoDich").toLocalDate();
+                double donGia = rs.getDouble("DonGia");
+                double dienTich = rs.getDouble("DienTich");
+                String diaChi = rs.getString("DiaChi");
+                String tenLoaiNha = rs.getString("TenLoaiNha");
+                double thanhTien = rs.getDouble("ThanhTien");
+
+                // Convert the tenLoaiNha String to a LoaiNha enum value
+                LoaiNha loaiNha = LoaiNha.fromString(tenLoaiNha);
+                // Create a GiaoDich object with the retrieved data
+                GiaoDichNha giaoDich = new GiaoDichNha(maGiaoDich, ngayGiaoDich, donGia, dienTich, maNguoiGiaoDich, diaChi, loaiNha);
+                giaoDich.setThanhTien(thanhTien);
+
+                // Add the GiaoDich to the list
+                giaoDichList.add(giaoDich);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return giaoDichList;
+    }
+
     @Override
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         try {

@@ -19,6 +19,9 @@ public class GiaoDichController {
     public List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich) {
         return giaoDichService.getGiaoDichDatByUserId(maNguoiGiaoDich);
     }
+    public List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich) {
+        return giaoDichService.getGiaoDichNhaByUserId(maNguoiGiaoDich);
+    }
 
     //AddGiaoDich
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {

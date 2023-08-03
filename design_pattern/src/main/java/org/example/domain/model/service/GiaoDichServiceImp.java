@@ -7,6 +7,7 @@ import org.example.domain.command.Command;
 import org.example.domain.command.calculateGiaoDich.CalculateAvgGiaoDichNha;
 import org.example.domain.command.getGiaoDich.GetGiaoDichDat;
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.GiaoDichNha;
 import org.example.persistence.GiaoDichDAO;
 
 import java.util.List;
@@ -24,6 +25,12 @@ public class GiaoDichServiceImp implements GiaoDichService {
     public List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich) {
         return giaoDichDAO.getGiaoDichDatByUserId(maNguoiGiaoDich);
     }
+    @Override
+    public List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich) {
+        return giaoDichDAO.getGiaoDichNhaByUserId(maNguoiGiaoDich);
+    }
+
+    //AddGiaoDich
     @Override
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         Command addGiaoDichDat = new AddGiaoDichDat(giaoDichDAO, giaoDichDat);

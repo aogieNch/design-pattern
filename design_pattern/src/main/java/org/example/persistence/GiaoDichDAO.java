@@ -1,6 +1,7 @@
 package org.example.persistence;
 
 import org.example.domain.model.GiaoDichDat;
+import org.example.domain.model.GiaoDichNha;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ public interface GiaoDichDAO {
 
     //GetGiaoDich
     List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich);
+    List<GiaoDichNha> getGiaoDichNhaByUserId(int maNguoiGiaoDich);
     void addGiaoDichDat(GiaoDichDat giaoDichDat);
 
     //Calculate Giao dich

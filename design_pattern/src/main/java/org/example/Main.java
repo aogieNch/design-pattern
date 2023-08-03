@@ -1,20 +1,13 @@
 package org.example;
 
-import org.example.domain.model.service.GiaoDichService;
-import org.example.domain.model.service.GiaoDichServiceImp;
 import org.example.domain.model.service.user.UserService;
 import org.example.domain.model.service.user.UserServiceImp;
-import org.example.persistence.GiaoDichDAO;
-import org.example.persistence.GiaoDichDAOImp;
-import org.example.persistence.GiaoDichGateWay;
-import org.example.persistence.GiaoDichGateWayImp;
+
 import org.example.persistence.login.UserDAO;
 import org.example.persistence.login.UserDAOImp;
 import org.example.persistence.login.UserGateWay;
 import org.example.persistence.login.UserGateWayImp;
-import org.example.presentation.controller.GiaoDichController;
 import org.example.presentation.controller.UserController;
-import org.example.presentation.view.GiaoDichView;
 import org.example.presentation.view.UserView;
 
 import javax.swing.*;
