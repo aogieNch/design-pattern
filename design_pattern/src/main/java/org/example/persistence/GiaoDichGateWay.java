@@ -1,5 +1,6 @@
 package org.example.persistence;
 
+import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.observer.DataObserver;
@@ -18,6 +19,12 @@ public interface GiaoDichGateWay {
     //UpdateGiaoDich
     void updateGiaoDichDat(GiaoDichDat giaoDichDat);
     void updateGiaoDichNha(GiaoDichNha giaoDichNha);
+
+    //SoftDeleteGiaoDich
+    void softDeleteGiaoDich(int maGiaoDichDat, int maNguoiGiaoDich);
+
+    //SearchGiaoDich
+    GiaoDich getGiaoDichByMaGiaoDich(int mGiaoDich, int maNguoiGiaoDich);
 
     //Calulate Giao dich
     float calculateGiaoDichDat(int maNguoiGiaoDich);

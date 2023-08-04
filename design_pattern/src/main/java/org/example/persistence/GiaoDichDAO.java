@@ -1,5 +1,6 @@
 package org.example.persistence;
 
+import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 
@@ -18,6 +19,12 @@ public interface GiaoDichDAO {
     //UpdateGiaoDich
     void updateGiaoDichDat(GiaoDichDat giaoDichDat);
     void updateGiaoDichNha(GiaoDichNha giaoDichNha);
+
+    //GetGiaoDich
+    GiaoDich getGiaoDichByMaGiaoDich(int mGiaoDich, int maNguoiGiaoDich);
+
+    //SoftDeleteGiaoDich
+    void softDeleteGiaoDich(int maGiaoDichDat, int maNguoiGiaoDich);
 
     //Calculate Giao dich
     float calculateGiaoDichDat(int maNguoiGiaoDich);

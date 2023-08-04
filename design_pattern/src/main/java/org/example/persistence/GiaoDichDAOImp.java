@@ -1,5 +1,6 @@
 package org.example.persistence;
 
+import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 
@@ -41,6 +42,18 @@ public class GiaoDichDAOImp implements GiaoDichDAO {
     @Override
     public void updateGiaoDichNha(GiaoDichNha giaoDichNha){
         giaoDichGateWay.updateGiaoDichNha(giaoDichNha);
+    }
+
+    //GetGiaoDich
+    @Override
+    public GiaoDich getGiaoDichByMaGiaoDich(int mGiaoDich, int maNguoiGiaoDich) {
+        return giaoDichGateWay.getGiaoDichByMaGiaoDich(mGiaoDich, maNguoiGiaoDich);
+    }
+
+    //SoftDeleteGiaoDich
+    @Override
+    public void softDeleteGiaoDich(int maGiaoDichDat, int maNguoiGiaoDich) {
+        giaoDichGateWay.softDeleteGiaoDich(maGiaoDichDat, maNguoiGiaoDich);
     }
 
     //Calculate Avg Giao Dich

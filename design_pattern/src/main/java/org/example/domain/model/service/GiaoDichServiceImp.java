@@ -8,11 +8,14 @@ import org.example.domain.command.Command;
 import org.example.domain.command.calculateGiaoDich.CalculateAvgGiaoDichNha;
 import org.example.domain.command.getGiaoDich.GetGiaoDichDat;
 import org.example.domain.command.getGiaoDich.GetGiaoDichNha;
+import org.example.domain.command.serchGiaoDich.GetGiaoDichByMaGiaoDich;
+import org.example.domain.command.softDeleteGiaoDich.SoftDeleteGiaoDich;
 import org.example.domain.command.totalAmount.AmountGiaoDich;
 import org.example.domain.command.totalAmount.AmountGiaoDichDat;
 import org.example.domain.command.totalAmount.AmountGiaoDichNha;
 import org.example.domain.command.updateGiaoDich.UpdateGiaoDichDat;
 import org.example.domain.command.updateGiaoDich.UpdateGiaoDichNha;
+import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.persistence.GiaoDichDAO;
@@ -65,6 +68,21 @@ public class GiaoDichServiceImp implements GiaoDichService {
     public void updateGiaoDichNha(GiaoDichNha giaoDichNha) {
         UpdateGiaoDichNha updateGiaoDichNha = new UpdateGiaoDichNha(giaoDichDAO, giaoDichNha);
         updateGiaoDichNha.execute();
+    }
+
+    //GetGiaoDich
+    @Override
+    public GiaoDich getGiaoDichByMaGiaoDich(int maGiaoDich, int maNguoiGiaoDich) {
+        GetGiaoDichByMaGiaoDich getGiaoDich = new GetGiaoDichByMaGiaoDich(giaoDichDAO, maGiaoDich, maNguoiGiaoDich);
+        getGiaoDich.execute();
+        return getGiaoDich.getGiaoDich();
+    }
+
+    //SoftDeleteGiaoDich
+    @Override
+    public void softDeleteGiaoDich(int maGiaoDich, int maNguoiGiaoDich) {
+        SoftDeleteGiaoDich softDeleteGiaoDich = new SoftDeleteGiaoDich(giaoDichDAO, maGiaoDich, maNguoiGiaoDich);
+        softDeleteGiaoDich.execute();
     }
 
     //CalculateAvgGiaoDichDat

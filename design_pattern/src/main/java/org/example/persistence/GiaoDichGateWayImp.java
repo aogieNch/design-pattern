@@ -1,9 +1,6 @@
 package org.example.persistence;
 
-import org.example.domain.model.GiaoDichDat;
-import org.example.domain.model.GiaoDichNha;
-import org.example.domain.model.LoaiDat;
-import org.example.domain.model.LoaiNha;
+import org.example.domain.model.*;
 import org.example.observer.DataObserver;
 
 import java.sql.*;
@@ -46,7 +43,7 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
                     "FROM ((GiaoDich " +
                     "INNER JOIN GiaoDichDat ON GiaoDich.MaGiaoDich = GiaoDichDat.MaGiaoDich) " +
                     "INNER JOIN LoaiDat ON GiaoDichDat.LoaiDat = LoaiDat.MaLoaiDat) " +
-                    "WHERE GiaoDich.NguoiMoGioi = ?";
+                    "WHERE GiaoDich.NguoiMoGioi = ? AND GiaoDich.is_deleted = 0";
 
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, maNguoiGiaoDich);
@@ -83,7 +80,7 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
                     "FROM ((GiaoDich " +
                     "INNER JOIN GiaoDichNha ON GiaoDich.MaGiaoDich = GiaoDichNha.MaGiaoDich) " +
                     "INNER JOIN LoaiNha ON GiaoDichNha.LoaiNha = LoaiNha.MaLoaiNha) " +
-                    "WHERE GiaoDich.NguoiMoGioi = ?";
+                    "WHERE GiaoDich.NguoiMoGioi = ? AND GiaoDich.is_deleted = 0";
 
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, maNguoiGiaoDich);
@@ -193,11 +190,11 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
             updateGiaoDichDatStmt.setInt(2, giaoDichDat.getMaGiaoDich());
             updateGiaoDichDatStmt.executeUpdate();
 
+            notifyObservers();
             System.out.println("Cập nhật giao dịch đất thành công.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        notifyObservers();
     }
 
     @Override
@@ -222,11 +219,122 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
             updateGiaoDichNhaStmt.setInt(3, giaoDichNha.getMaGiaoDich());
             updateGiaoDichNhaStmt.executeUpdate();
 
+            notifyObservers();
             System.out.println("Cập nhật giao dịch Nhà thành công.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        notifyObservers();
+    }
+
+    //Get giao dich
+    private GiaoDichDat getGiaoDichDatByMaGiaoDich(int maGiaoDich, int maNguoiMoGioi) {
+        try {
+            String sql = "SELECT GiaoDich.MaGiaoDich, GiaoDich.NgayGiaoDich, GiaoDich.DonGia, GiaoDich.DienTich, LoaiDat.TenLoaiDat, GiaoDich.ThanhTien " +
+                    "FROM ((GiaoDich " +
+                    "INNER JOIN GiaoDichDat ON GiaoDich.MaGiaoDich = GiaoDichDat.MaGiaoDich) " +
+                    "INNER JOIN LoaiDat ON GiaoDichDat.LoaiDat = LoaiDat.MaLoaiDat) " +
+                    "WHERE GiaoDich.NguoiMoGioi = ? AND GiaoDich.is_deleted = 0 AND GiaoDich.MaGiaoDich = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, maNguoiMoGioi);
+            stmt.setInt(2, maGiaoDich);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int maGiaoDichDat = rs.getInt("MaGiaoDich");
+                LocalDate ngayGiaoDich = rs.getDate("NgayGiaoDich").toLocalDate();
+                double donGia = rs.getDouble("DonGia");
+                double dienTich = rs.getDouble("DienTich");
+
+                LoaiDat loaiDat = LoaiDat.fromString(rs.getString("TenLoaiDat"));
+                double thanhTien = rs.getDouble("ThanhTien");
+
+                GiaoDichDat giaoDichDat = new GiaoDichDat(maGiaoDichDat, ngayGiaoDich, donGia, dienTich, maNguoiMoGioi, loaiDat);
+                giaoDichDat.setThanhTien(thanhTien);
+
+                return giaoDichDat;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private GiaoDichNha getGiaoDichNhaByMaGiaoDich(int maGiaoDich, int maNguoiMoGioi) {
+        try {
+            String sql = "SELECT GiaoDich.MaGiaoDich, GiaoDich.NgayGiaoDich, GiaoDich.DonGia, GiaoDich.DienTich, LoaiNha.TenLoaiNha, GiaoDichNha.DiaChi, GiaoDich.ThanhTien" +
+                    "FROM ((GiaoDich INNER JOIN GiaoDichNha ON GiaoDich.MaGiaoDich = GiaoDichNha.MaGiaoDich)" +
+                    "INNER JOIN LoaiNha ON GiaoDichNha.LoaiNha = LoaiNha.MaLoaiNha)" +
+                    "WHERE GiaoDich.NguoiMoGioi = ? AND GiaoDich.is_deleted = 0 AND GiaoDich.MaGiaoDich = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, maGiaoDich);
+            stmt.setInt(2, maNguoiMoGioi);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int maGiaoDichNha = rs.getInt("MaGiaoDich");
+                LocalDate ngayGiaoDich = rs.getDate("NgayGiaoDich").toLocalDate();
+                double donGia = rs.getDouble("DonGia");
+                LoaiNha loaiNha = LoaiNha.fromString(rs.getString("LoaiNha"));
+                String diaChi = rs.getString("DiaChi");
+                double dienTich = rs.getDouble("DienTich");
+                double thanhTien = rs.getDouble("ThanhTien");
+
+                GiaoDichNha giaoDichNha = new GiaoDichNha(maGiaoDichNha, ngayGiaoDich, donGia, dienTich, maNguoiMoGioi, diaChi, loaiNha);
+                giaoDichNha.setThanhTien(thanhTien);
+
+                return giaoDichNha;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public GiaoDich getGiaoDichByMaGiaoDich(int maGiaoDich, int maNguoiMoGioi) {
+        GiaoDichDat giaoDichDat = getGiaoDichDatByMaGiaoDich(maGiaoDich, maNguoiMoGioi);
+        if (giaoDichDat != null) {
+            return giaoDichDat;
+        }
+
+        return getGiaoDichNhaByMaGiaoDich(maGiaoDich, maNguoiMoGioi);
+    }
+    //Soft delete Giao Dich
+    @Override
+    public void softDeleteGiaoDich(int maGiaoDich, int maNguoiMoGioi) {
+        try {
+            GiaoDich giaoDich = getGiaoDichByMaGiaoDich(maGiaoDich, maNguoiMoGioi);
+
+            if (giaoDich != null) {
+                String updateGiaoDichSql = "UPDATE GiaoDich SET is_deleted = 1 WHERE MaGiaoDich = ? AND NguoiMoGioi = ?";
+                PreparedStatement updateGiaoDichStmt = connection.prepareStatement(updateGiaoDichSql);
+                updateGiaoDichStmt.setInt(1, maGiaoDich);
+                updateGiaoDichStmt.setInt(2, maNguoiMoGioi);
+                updateGiaoDichStmt.executeUpdate();
+
+                if (giaoDich instanceof GiaoDichDat) {
+                    String updateGiaoDichDatSql = "UPDATE GiaoDichDat SET is_deleted = 1 WHERE MaGiaoDich = ?";
+                    PreparedStatement updateGiaoDichDatStmt = connection.prepareStatement(updateGiaoDichDatSql);
+                    updateGiaoDichDatStmt.setInt(1, maGiaoDich);
+                    updateGiaoDichDatStmt.executeUpdate();
+                    System.out.println("Soft delete successful from GiaoDichDat.");
+                } else if (giaoDich instanceof GiaoDichNha) {
+                    String updateGiaoDichNhaSql = "UPDATE GiaoDichNha SET is_deleted = 1 WHERE MaGiaoDich = ?";
+                    PreparedStatement updateGiaoDichNhaStmt = connection.prepareStatement(updateGiaoDichNhaSql);
+                    updateGiaoDichNhaStmt.setInt(1, maGiaoDich);
+                    updateGiaoDichNhaStmt.executeUpdate();
+                    System.out.println("Soft delete successful from GiaoDichNha.");
+                }
+            } else {
+                // Handle the case when the maGiaoDich doesn't exist in any table
+                System.out.println("GiaoDich not found.");
+            }
+            notifyObservers();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception if needed
+        }
     }
 
     //Calculate Giao dich

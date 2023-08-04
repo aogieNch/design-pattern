@@ -1,9 +1,6 @@
 package org.example.presentation.view;
 
-import org.example.domain.model.GiaoDichDat;
-import org.example.domain.model.GiaoDichNha;
-import org.example.domain.model.LoaiDat;
-import org.example.domain.model.LoaiNha;
+import org.example.domain.model.*;
 import org.example.domain.model.service.user.UserService;
 import org.example.domain.model.service.user.UserServiceImp;
 import org.example.observer.DataObserver;
@@ -23,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -261,10 +259,17 @@ public class ViewQlNd extends JFrame implements DataObserver {
         JButton btn_Xoa = new JButton("Xóa");
         btn_Xoa.setBounds(200, 365, 62, 23);
         contentPane.add(btn_Xoa);
+        btn_Xoa.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                softDeleteGiaoDich();
+            }
+        });
 
         JButton btn_TimKiem = new JButton("Tìm Kiếm");
         btn_TimKiem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                getGiaoDichDatByMaGiaoDich();
             }
         });
         btn_TimKiem.setBounds(283, 365, 100, 23);
@@ -499,13 +504,13 @@ public class ViewQlNd extends JFrame implements DataObserver {
         }
 
         try {
-            // Update the GiaoDichDat data using the controller
+            // Update the GiaoDichNha data using the controller
             controller.updateGiaoDichNha(new GiaoDichNha(maGiaoDich, ngayGiaoDich, donGia, dienTich, maNguoiMoGioi, diaChi, loaiNha));
 
             // Show a success message if the data is updated successfully
             JOptionPane.showMessageDialog(this, "Cập nhật giao dịch nhà thành công!");
 
-            // Clear the fields after updating the GiaoDichDat
+            // Clear the fields after updating the GiaoDichNha
             textField_Id.setText("");
             textField_NgayGD.setText("");
             textField_DonGia.setText("");
@@ -570,6 +575,75 @@ public class ViewQlNd extends JFrame implements DataObserver {
         loadData(); // Update the view when data changes
     }
 
+    //GetGiaoDichDatByMaGiaoDich
+    private void getGiaoDichDatByMaGiaoDich() {
+        int maGiaoDich = Integer.parseInt(textField_Id.getText());
+        int maNguoiGiaoDich;
+
+        String idNMGText = textField_IDNMG.getText();
+
+        if (idNMGText.isEmpty()) {
+            // Show an error message if the maNguoiMoGioi text field is empty
+            JOptionPane.showMessageDialog(this, "Mã người mô giới không được để trống!");
+            return;
+        } else {
+            try {
+                // Try to parse the input as an integer
+                maNguoiGiaoDich = Integer.parseInt(idNMGText);
+            } catch (NumberFormatException e) {
+                // Show an error message if the input is not a valid integer
+                JOptionPane.showMessageDialog(this, "Mã người mô giới phải là số nguyên!");
+                return;
+            }
+        }
+
+        GiaoDich giaoDich = controller.getGiaoDichByMaGiaoDich(maGiaoDich, maNguoiGiaoDich);
+
+        if (giaoDich != null) {
+
+            String message = "Ma Giao Dich: " + giaoDich.getMaGiaoDich() + "\n" +
+                    "Ngay Giao Dich: " + giaoDich.getNgayGiaoDich() + "\n" +
+                    "Don Gia: " + giaoDich.getDonGia() + "\n" +
+                    "Dien Tich: " + giaoDich.getDienTich() + "\n" +
+                    "Thanh Tien: " + giaoDich.getThanhTien() + "\n";
+
+            JOptionPane.showMessageDialog(this, message, "Thong tin giao dich", JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+            // Show an error message if the GiaoDichDat could not be found
+            JOptionPane.showMessageDialog(this, "Không tìm thấy giao dịch có mã " + maGiaoDich + ". Vui lòng thử lại!");
+        }
+    }
+
+    //SoftDeleteGiaoDich
+    private void softDeleteGiaoDich() {
+        int maGiaoDich = Integer.parseInt(textField_Id.getText());
+        int maNguoiGiaoDich;
+
+        String idNMGText = textField_IDNMG.getText();
+
+        if (idNMGText.isEmpty()) {
+            // Show an error message if the maNguoiMoGioi text field is empty
+            JOptionPane.showMessageDialog(this, "Mã người mô giới không được để trống!");
+            return;
+        } else {
+            try {
+                // Try to parse the input as an integer
+                maNguoiGiaoDich = Integer.parseInt(idNMGText);
+            } catch (NumberFormatException e) {
+                // Show an error message if the input is not a valid integer
+                JOptionPane.showMessageDialog(this, "Mã người mô giới phải là số nguyên!");
+                return;
+            }
+        }
+
+        try {
+            controller.softDeleteGiaoDich(maGiaoDich, maNguoiGiaoDich);
+            JOptionPane.showMessageDialog(this, "Xóa giao dịch thành công!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Xóa giao dịch thất bại. Vui lòng thử lại!");
+        }
+    }
     private void calculateAvgGiaoDich() {
         int maNguoiGiaoDich = Integer.parseInt(textField_IDNMG.getText());
         float resultDat = controller.calculateGiaoDichDat(maNguoiGiaoDich);

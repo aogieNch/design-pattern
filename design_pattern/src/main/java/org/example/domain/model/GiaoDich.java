@@ -8,6 +8,7 @@ public abstract class GiaoDich {
     protected double donGia;
     protected double dienTich;
     protected int nguoiMoGioi;
+    protected double thanhTien;
 
     public GiaoDich(int maGiaoDich, LocalDate ngayGiaoDich, double donGia, double dienTich, int nguoiMoGioi) {
         this.maGiaoDich = maGiaoDich;
@@ -38,6 +39,9 @@ public abstract class GiaoDich {
 
     public int getNguoiMoGioi() {
         return nguoiMoGioi;
+    }
+    public double getThanhTien() {
+        return thanhTien;
     }
 
     public abstract double thanhTien();

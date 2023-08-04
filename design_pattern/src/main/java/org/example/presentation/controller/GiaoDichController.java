@@ -1,5 +1,6 @@
 package org.example.presentation.controller;
 
+import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.service.GiaoDichService;
@@ -45,6 +46,15 @@ public class GiaoDichController {
     }
     public void updateGiaoDichNha(GiaoDichNha giaoDichNha) {
         giaoDichService.updateGiaoDichNha(giaoDichNha);
+    }
+
+    //GetGiaoDich
+    public GiaoDich getGiaoDichByMaGiaoDich(int maGiaoDich, int maNguoiGiaoDich) {
+        return giaoDichService.getGiaoDichByMaGiaoDich(maGiaoDich, maNguoiGiaoDich);
+    }
+    //SoftDeleteGiaoDich
+    public void softDeleteGiaoDich(int maGiaoDichDat, int maNguoiGiaoDich) {
+        giaoDichService.softDeleteGiaoDich(maGiaoDichDat, maNguoiGiaoDich);
     }
 
     //CalculateAvgGiaoDich
