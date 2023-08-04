@@ -38,6 +38,11 @@ public class GiaoDichDAOImp implements GiaoDichDAO {
         giaoDichGateWay.updateGiaoDichDat(giaoDichDat);
     }
 
+    @Override
+    public void updateGiaoDichNha(GiaoDichNha giaoDichNha){
+        giaoDichGateWay.updateGiaoDichNha(giaoDichNha);
+    }
+
     //Calculate Avg Giao Dich
     @Override
     public float calculateGiaoDichDat(int maNguoiGiaoDich) {

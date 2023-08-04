@@ -14,7 +14,7 @@ import java.util.List;
 public class GiaoDichGateWayImp implements GiaoDichGateWay {
 
     private Connection connection;
-    private List<DataObserver> observers = new ArrayList<>();
+    private final List<DataObserver> observers = new ArrayList<>();
 
     public GiaoDichGateWayImp() {
         String dbUrl = "jdbc:sqlserver://localhost:1433;databaseName=quanlygiaodich;integratedSecurity=true;trustServerCertificate=true;";
@@ -194,6 +194,35 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
             updateGiaoDichDatStmt.executeUpdate();
 
             System.out.println("Cập nhật giao dịch đất thành công.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        notifyObservers();
+    }
+
+    @Override
+    public void updateGiaoDichNha(GiaoDichNha giaoDichNha) {
+        try {
+            // Cập nhật dữ liệu trong bảng GiaoDich
+            String updateGiaoDichSql = "UPDATE GiaoDich SET NgayGiaoDich = ?, DonGia = ?, DienTich = ?, ThanhTien = ?, NguoiMoGioi = ? WHERE MaGiaoDich = ?";
+            PreparedStatement updateGiaoDichStmt = connection.prepareStatement(updateGiaoDichSql);
+            updateGiaoDichStmt.setDate(1, Date.valueOf(giaoDichNha.getNgayGiaoDich()));
+            updateGiaoDichStmt.setDouble(2, giaoDichNha.getDonGia());
+            updateGiaoDichStmt.setDouble(3, giaoDichNha.getDienTich());
+            updateGiaoDichStmt.setDouble(4, giaoDichNha.thanhTien());
+            updateGiaoDichStmt.setString(5, String.valueOf(giaoDichNha.getNguoiMoGioi()));
+            updateGiaoDichStmt.setInt(6, giaoDichNha.getMaGiaoDich());
+            updateGiaoDichStmt.executeUpdate();
+
+            // Cập nhật dữ liệu trong bảng GiaoDichNha
+            String updateGiaoDichNhaSql = "UPDATE GiaoDichNha SET DiaChi = ?, LoaiNha = ? WHERE MaGiaoDich = ?";
+            PreparedStatement updateGiaoDichNhaStmt = connection.prepareStatement(updateGiaoDichNhaSql);
+            updateGiaoDichNhaStmt.setString(1, giaoDichNha.getDiaChi());
+            updateGiaoDichNhaStmt.setInt(2, giaoDichNha.getLoaiNha().ordinal() + 1);
+            updateGiaoDichNhaStmt.setInt(3, giaoDichNha.getMaGiaoDich());
+            updateGiaoDichNhaStmt.executeUpdate();
+
+            System.out.println("Cập nhật giao dịch Nhà thành công.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

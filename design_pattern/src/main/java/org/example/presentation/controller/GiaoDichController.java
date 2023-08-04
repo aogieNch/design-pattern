@@ -43,6 +43,9 @@ public class GiaoDichController {
     public void updateGiaoDichDat(GiaoDichDat giaoDichDat) {
         giaoDichService.updateGiaoDichDat(giaoDichDat);
     }
+    public void updateGiaoDichNha(GiaoDichNha giaoDichNha) {
+        giaoDichService.updateGiaoDichNha(giaoDichNha);
+    }
 
     //CalculateAvgGiaoDich
     public float calculateGiaoDichDat(int maNguoiGiaoDich) {

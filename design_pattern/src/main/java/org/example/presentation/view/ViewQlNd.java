@@ -4,8 +4,15 @@ import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.LoaiDat;
 import org.example.domain.model.LoaiNha;
+import org.example.domain.model.service.user.UserService;
+import org.example.domain.model.service.user.UserServiceImp;
 import org.example.observer.DataObserver;
+import org.example.persistence.login.UserDAO;
+import org.example.persistence.login.UserDAOImp;
+import org.example.persistence.login.UserGateWay;
+import org.example.persistence.login.UserGateWayImp;
 import org.example.presentation.controller.GiaoDichController;
+import org.example.presentation.controller.UserController;
 
 import java.awt.*;
 
@@ -39,7 +46,7 @@ public class ViewQlNd extends JFrame implements DataObserver {
     public ViewQlNd(GiaoDichController controller) {
         this.controller = controller;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 722, 450);
+        setBounds(100, 100, 722, 485);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -246,7 +253,7 @@ public class ViewQlNd extends JFrame implements DataObserver {
                 if ("Loại Đất".equals(comboBox_LoaiGD.getSelectedItem())) {
                     updateGiaoDichDat();
                 } else {
-//                    updateGiaoDichNha();
+                    updateGiaoDichNha();
                 }
             }
         });
@@ -280,6 +287,21 @@ public class ViewQlNd extends JFrame implements DataObserver {
         });
         btn_TinhTong.setBounds(405, 365, 145, 23);
         contentPane.add(btn_TinhTong);
+
+        JButton btn_Thoat = new JButton("Đăng xuất");
+        btn_Thoat.setBounds(570, 400, 120, 35);
+        contentPane.add(btn_Thoat);
+        btn_Thoat.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserGateWay userGateWay = new UserGateWayImp();
+                UserDAO userDAO = new UserDAOImp(userGateWay);
+                UserService userService = new UserServiceImp(userDAO);
+                UserController userController = new UserController(userService);
+                UserView userView = new UserView(userController);
+                userView.setVisible(true);
+            }
+        });
 
         //xử lí ẩn hiện
         comboBox_LoaiGD.addActionListener(new ActionListener() {
@@ -407,7 +429,7 @@ public class ViewQlNd extends JFrame implements DataObserver {
     }
 
     //UpdateGiaoDich
-    public void updateGiaoDichDat() {
+    private void updateGiaoDichDat() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         double donGia = Double.parseDouble(textField_DonGia.getText());
@@ -448,6 +470,51 @@ public class ViewQlNd extends JFrame implements DataObserver {
         } catch (Exception ex) {
             // Show an error message if the data could not be updated
             JOptionPane.showMessageDialog(this, "Không thể cập nhật giao dịch đất. Vui lòng thử lại!");
+        }
+    }
+
+    private void updateGiaoDichNha() {
+        int maGiaoDich = Integer.parseInt(textField_Id.getText());
+        LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        double donGia = Double.parseDouble(textField_DonGia.getText());
+        double dienTich = Double.parseDouble(textField_DienTich.getText());
+        LoaiNha loaiNha = (LoaiNha) comboBox_LoaiNha.getSelectedItem();
+        String diaChi = textField_DiaChi.getText();
+        int maNguoiMoGioi;
+        String idNMGText = textField_IDNMG.getText();
+
+        if (idNMGText.isEmpty()) {
+            // Show an error message if the maNguoiMoGioi text field is empty
+            JOptionPane.showMessageDialog(this, "Mã người mô giới không được để trống!");
+            return;
+        } else {
+            try {
+                // Try to parse the input as an integer
+                maNguoiMoGioi = Integer.parseInt(idNMGText);
+            } catch (NumberFormatException e) {
+                // Show an error message if the input is not a valid integer
+                JOptionPane.showMessageDialog(this, "Mã người mô giới phải là số nguyên!");
+                return;
+            }
+        }
+
+        try {
+            // Update the GiaoDichDat data using the controller
+            controller.updateGiaoDichNha(new GiaoDichNha(maGiaoDich, ngayGiaoDich, donGia, dienTich, maNguoiMoGioi, diaChi, loaiNha));
+
+            // Show a success message if the data is updated successfully
+            JOptionPane.showMessageDialog(this, "Cập nhật giao dịch nhà thành công!");
+
+            // Clear the fields after updating the GiaoDichDat
+            textField_Id.setText("");
+            textField_NgayGD.setText("");
+            textField_DonGia.setText("");
+            textField_DienTich.setText("");
+            comboBox_LoaiNha.setSelectedIndex(0);
+            textField_IDNMG.setText("");
+        } catch (Exception ex) {
+            // Show an error message if the data could not be updated
+            JOptionPane.showMessageDialog(this, "Không thể cập nhật giao dịch nhà. Vui lòng thử lại!");
         }
     }
 

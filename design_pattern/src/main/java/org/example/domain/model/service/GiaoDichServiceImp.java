@@ -12,6 +12,7 @@ import org.example.domain.command.totalAmount.AmountGiaoDich;
 import org.example.domain.command.totalAmount.AmountGiaoDichDat;
 import org.example.domain.command.totalAmount.AmountGiaoDichNha;
 import org.example.domain.command.updateGiaoDich.UpdateGiaoDichDat;
+import org.example.domain.command.updateGiaoDich.UpdateGiaoDichNha;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.persistence.GiaoDichDAO;
@@ -57,8 +58,13 @@ public class GiaoDichServiceImp implements GiaoDichService {
     //UpdateGiaoDich
     @Override
     public void updateGiaoDichDat(GiaoDichDat giaoDichDat) {
-        Command updateGiaoDichDat = new UpdateGiaoDichDat(giaoDichDAO, giaoDichDat);
+        UpdateGiaoDichDat updateGiaoDichDat = new UpdateGiaoDichDat(giaoDichDAO, giaoDichDat);
         updateGiaoDichDat.execute();
+    }
+    @Override
+    public void updateGiaoDichNha(GiaoDichNha giaoDichNha) {
+        UpdateGiaoDichNha updateGiaoDichNha = new UpdateGiaoDichNha(giaoDichDAO, giaoDichNha);
+        updateGiaoDichNha.execute();
     }
 
     //CalculateAvgGiaoDichDat

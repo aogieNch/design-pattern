@@ -17,6 +17,7 @@ public interface GiaoDichGateWay {
 
     //UpdateGiaoDich
     void updateGiaoDichDat(GiaoDichDat giaoDichDat);
+    void updateGiaoDichNha(GiaoDichNha giaoDichNha);
 
     //Calulate Giao dich
     float calculateGiaoDichDat(int maNguoiGiaoDich);

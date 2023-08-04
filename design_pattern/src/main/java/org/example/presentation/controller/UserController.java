@@ -3,10 +3,13 @@ package org.example.presentation.controller;
 import org.example.domain.model.service.user.UserService;
 
 public class UserController {
-    private final UserService userService;
+    private UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    public UserController(){
     }
 
     public boolean checkLogin(String username, String password) {
