@@ -44,5 +44,31 @@ public abstract class GiaoDich {
         return thanhTien;
     }
 
+    public void setDonGia(double donGia) {
+        this.donGia = donGia;
+    }
+
+    public String getFormattedDonGia() {
+        return formatMoney((float) getDonGia());
+    }
+
+    public void setThanhTien(double thanhTien) {
+        this.thanhTien = thanhTien;
+    }
+
+    public String getFormettedThanhTien() {
+        return formatMoney((float) thanhTien());
+    }
+
+    private String formatMoney(float amount) {
+        if (amount >= 1_000_000_000) {;
+            return String.format("%,.0f ty", amount);
+        } else if (amount >= 1_000_000) {
+            return String.format("%,.0f tr", amount);
+        } else {
+            return String.format("%,.0f", amount);
+        }
+    }
+
     public abstract double thanhTien();
 }

@@ -262,20 +262,21 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
 
     private GiaoDichNha getGiaoDichNhaByMaGiaoDich(int maGiaoDich, int maNguoiMoGioi) {
         try {
-            String sql = "SELECT GiaoDich.MaGiaoDich, GiaoDich.NgayGiaoDich, GiaoDich.DonGia, GiaoDich.DienTich, LoaiNha.TenLoaiNha, GiaoDichNha.DiaChi, GiaoDich.ThanhTien" +
-                    "FROM ((GiaoDich INNER JOIN GiaoDichNha ON GiaoDich.MaGiaoDich = GiaoDichNha.MaGiaoDich)" +
-                    "INNER JOIN LoaiNha ON GiaoDichNha.LoaiNha = LoaiNha.MaLoaiNha)" +
+            String sql = "SELECT GiaoDich.MaGiaoDich, GiaoDich.NgayGiaoDich, GiaoDich.DonGia, GiaoDich.DienTich, LoaiNha.TenLoaiNha, GiaoDichNha.DiaChi, GiaoDich.ThanhTien " +
+                    "FROM ((GiaoDich " +
+                    "INNER JOIN GiaoDichNha ON GiaoDich.MaGiaoDich = GiaoDichNha.MaGiaoDich) " +
+                    "INNER JOIN LoaiNha ON GiaoDichNha.LoaiNha = LoaiNha.MaLoaiNha) " +
                     "WHERE GiaoDich.NguoiMoGioi = ? AND GiaoDich.is_deleted = 0 AND GiaoDich.MaGiaoDich = ?";
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, maGiaoDich);
-            stmt.setInt(2, maNguoiMoGioi);
+            stmt.setInt(1, maNguoiMoGioi);
+            stmt.setInt(2, maGiaoDich);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 int maGiaoDichNha = rs.getInt("MaGiaoDich");
                 LocalDate ngayGiaoDich = rs.getDate("NgayGiaoDich").toLocalDate();
                 double donGia = rs.getDouble("DonGia");
-                LoaiNha loaiNha = LoaiNha.fromString(rs.getString("LoaiNha"));
+                LoaiNha loaiNha = LoaiNha.fromString(rs.getString("TenLoaiNha"));
                 String diaChi = rs.getString("DiaChi");
                 double dienTich = rs.getDouble("DienTich");
                 double thanhTien = rs.getDouble("ThanhTien");
@@ -424,7 +425,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         }
         return result;
     }
-
     @Override
     public int amountGiaoDich(int maNguoiGiaoDich) {
         int result = 0;

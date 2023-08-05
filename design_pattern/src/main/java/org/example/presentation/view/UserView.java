@@ -21,9 +21,9 @@ import java.security.NoSuchAlgorithmException;
 public class UserView extends JFrame {
 
     private JPanel contentPane;
-    private JTextField textField_TenDangNhap;
-    private JPasswordField textField_MkDangNhap;
-    private UserController controller;
+    private final JTextField textField_TenDangNhap;
+    private final JPasswordField textField_MkDangNhap;
+    private final UserController controller;
 
     public UserView(UserController controller) {
         this.controller = controller;

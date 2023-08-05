@@ -12,7 +12,7 @@ public class GiaoDichController {
     private final GiaoDichService giaoDichService;
     private GiaoDichDat giaoDichDat;
     private GiaoDichNha giaoDichNha;
-    private int maNguoiGiaoDich;
+    private final int maNguoiGiaoDich;
 
     public GiaoDichController(GiaoDichService giaoDichService, int maNguoiGiaoDich) {
         this.maNguoiGiaoDich = maNguoiGiaoDich;

@@ -20,7 +20,6 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,18 +27,18 @@ import java.util.List;
 public class ViewQlNd extends JFrame implements DataObserver {
 
     private JPanel contentPane;
-    private JTextField textField_NgayGD;
-    private JTextField textField_DonGia;
-    private JTextField textField_DienTich;
-    private JTextField textField_DiaChi;
-    private JTextField textField_Id;
-    private JTextField textField_IDNMG;
-    private JComboBox<String> comboBox_LoaiGD;
-    private JComboBox<LoaiDat> comboBox_LoaiDat;
-    private JComboBox<LoaiNha> comboBox_LoaiNha;
-    private JTable table_DSDat;
-    private JTable table_DSNha;
-    private GiaoDichController controller;
+    private final JTextField textField_NgayGD;
+    private final JTextField textField_DonGia;
+    private final JTextField textField_DienTich;
+    private final JTextField textField_DiaChi;
+    private final JTextField textField_Id;
+    private final JTextField textField_IDNMG;
+    private final JComboBox<String> comboBox_LoaiGD;
+    private final JComboBox<LoaiDat> comboBox_LoaiDat;
+    private final JComboBox<LoaiNha> comboBox_LoaiNha;
+    private final JTable table_DSDat;
+    private final JTable table_DSNha;
+    private final GiaoDichController controller;
 
     public ViewQlNd(GiaoDichController controller) {
         this.controller = controller;
@@ -123,6 +122,8 @@ public class ViewQlNd extends JFrame implements DataObserver {
         textField_IDNMG = new JTextField();
         textField_IDNMG.setBounds(460, 35, 38, 22);
         contentPane.add(textField_IDNMG);
+        textField_IDNMG.setText(String.valueOf(controller.getMaNguoiGiaoDich()));
+        textField_IDNMG.setEditable(false);
 
         textField_DiaChi = new JTextField();
         textField_DiaChi.setColumns(10);
@@ -145,23 +146,29 @@ public class ViewQlNd extends JFrame implements DataObserver {
                         { null, null, null, null, null, null},
                 },
                 new String[] {
-                        "MaGD", "NgayGD", "DonGia", "DienTich", "LoaiDat", "ThanhTien"
+                        "Mã", "Ngày giao dịch", "Đơn giá", "Diện tích", "Loại đất", "Thành tiền"
                 }));
+        table_DSDat.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table_DSDat.getColumnModel().getColumn(1).setPreferredWidth(105);
+        table_DSDat.getColumnModel().getColumn(2).setPreferredWidth(120);
+        table_DSDat.getColumnModel().getColumn(3).setPreferredWidth(80);
+        table_DSDat.getColumnModel().getColumn(4).setPreferredWidth(75);
+        table_DSDat.getColumnModel().getColumn(5).setPreferredWidth(250);
         table_DSDat.getSelectionModel().addListSelectionListener(e -> {
             int selectedRow = table_DSDat.getSelectedRow();
             if (selectedRow >= 0) {
                 DefaultTableModel dtmDat = (DefaultTableModel) table_DSDat.getModel();
                 int maGiaoDich = (int) dtmDat.getValueAt(selectedRow, 0);
                 LocalDate ngayGiaoDich = (LocalDate) dtmDat.getValueAt(selectedRow, 1);
-                double donGia = (double) dtmDat.getValueAt(selectedRow, 2);
-                double dienTich = (double) dtmDat.getValueAt(selectedRow, 3);
+                String donGia = (String) dtmDat.getValueAt(selectedRow, 2);
+                String dienTich = (String) dtmDat.getValueAt(selectedRow, 3);
                 LoaiDat loaiDat = (LoaiDat) dtmDat.getValueAt(selectedRow, 4);
 
                 // Update the text fields with the selected row data
                 textField_Id.setText(Integer.toString(maGiaoDich));
                 textField_NgayGD.setText(ngayGiaoDich.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-                textField_DonGia.setText(Double.toString(donGia));
-                textField_DienTich.setText(Double.toString(dienTich));
+                textField_DonGia.setText(donGia);
+                textField_DienTich.setText(dienTich);
                 comboBox_LoaiDat.setSelectedItem(loaiDat);
 
                 // Disable/Enable appropriate fields based on the selected Loai giao dich
@@ -193,24 +200,31 @@ public class ViewQlNd extends JFrame implements DataObserver {
                         { null, null, null, null, null, null, null, null },
                 },
                 new String[] {
-                        "MaGD", "NgayGD", "DonGia", "LoaiNha", "DiaChi", "DienTich", "ThanhTien"
+                        "Mã", "Ngày giao dịch", "Đơn giá", "Loại nhà", "Địa chỉ", "Diện tích", "Thành tiền"
                 }));
+        table_DSNha.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table_DSNha.getColumnModel().getColumn(1).setPreferredWidth(105);
+        table_DSNha.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table_DSNha.getColumnModel().getColumn(3).setPreferredWidth(80);
+        table_DSNha.getColumnModel().getColumn(4).setPreferredWidth(120);
+        table_DSNha.getColumnModel().getColumn(5).setPreferredWidth(75);
+        table_DSNha.getColumnModel().getColumn(6).setPreferredWidth(240);
         table_DSNha.getSelectionModel().addListSelectionListener(e -> {
             int selectedRow = table_DSNha.getSelectedRow();
             if (selectedRow >= 0) {
                 DefaultTableModel dtmNha = (DefaultTableModel) table_DSNha.getModel();
                 int maGiaoDich = (int) dtmNha.getValueAt(selectedRow, 0);
                 LocalDate ngayGiaoDich = (LocalDate) dtmNha.getValueAt(selectedRow, 1);
-                double donGia = (double) dtmNha.getValueAt(selectedRow, 2);
+                String donGia = (String) dtmNha.getValueAt(selectedRow, 2);
                 LoaiNha loaiNha = (LoaiNha) dtmNha.getValueAt(selectedRow, 3);
                 String diaChi = (String) dtmNha.getValueAt(selectedRow, 4);
-                double dienTich = (double) dtmNha.getValueAt(selectedRow, 5);
+                String dienTich = (String) dtmNha.getValueAt(selectedRow, 5);
 
                 // Update the text fields with the selected row data
                 textField_Id.setText(Integer.toString(maGiaoDich));
                 textField_NgayGD.setText(ngayGiaoDich.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-                textField_DonGia.setText(Double.toString(donGia));
-                textField_DienTich.setText(Double.toString(dienTich));
+                textField_DonGia.setText(donGia);
+                textField_DienTich.setText(dienTich);
                 comboBox_LoaiNha.setSelectedItem(loaiNha);
                 textField_DiaChi.setText(diaChi);
 
@@ -269,7 +283,7 @@ public class ViewQlNd extends JFrame implements DataObserver {
         JButton btn_TimKiem = new JButton("Tìm Kiếm");
         btn_TimKiem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                getGiaoDichDatByMaGiaoDich();
+                getGiaoDichByMaGiaoDich();
             }
         });
         btn_TimKiem.setBounds(283, 365, 100, 23);
@@ -382,7 +396,6 @@ public class ViewQlNd extends JFrame implements DataObserver {
             textField_DonGia.setText("");
             textField_DienTich.setText("");
             comboBox_LoaiDat.setSelectedIndex(0);
-            textField_IDNMG.setText("");
         } catch (Exception ex) {
             // Show an error message if the data could not be added
             JOptionPane.showMessageDialog(this, "Không thể thêm giao dịch đất. Vui lòng thử lại!");
@@ -426,7 +439,6 @@ public class ViewQlNd extends JFrame implements DataObserver {
             textField_DienTich.setText("");
             comboBox_LoaiNha.setSelectedIndex(0);
             textField_DiaChi.setText("");
-            textField_IDNMG.setText("");
         } catch (Exception ex) {
             // Show an error message if the data could not be added
             JOptionPane.showMessageDialog(this, "Không thể thêm giao dịch nhà. Vui lòng thử lại!");
@@ -437,8 +449,8 @@ public class ViewQlNd extends JFrame implements DataObserver {
     private void updateGiaoDichDat() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        double donGia = Double.parseDouble(textField_DonGia.getText());
-        double dienTich = Double.parseDouble(textField_DienTich.getText());
+        double donGia = parseMoneyStringToDouble(textField_DonGia.getText());
+        double dienTich = parseMoneyStringToDouble(textField_DienTich.getText());
         LoaiDat loaiDat = (LoaiDat) comboBox_LoaiDat.getSelectedItem();
         int maNguoiMoGioi;
         String idNMGText = textField_IDNMG.getText();
@@ -471,7 +483,6 @@ public class ViewQlNd extends JFrame implements DataObserver {
             textField_DonGia.setText("");
             textField_DienTich.setText("");
             comboBox_LoaiDat.setSelectedIndex(0);
-            textField_IDNMG.setText("");
         } catch (Exception ex) {
             // Show an error message if the data could not be updated
             JOptionPane.showMessageDialog(this, "Không thể cập nhật giao dịch đất. Vui lòng thử lại!");
@@ -481,8 +492,8 @@ public class ViewQlNd extends JFrame implements DataObserver {
     private void updateGiaoDichNha() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        double donGia = Double.parseDouble(textField_DonGia.getText());
-        double dienTich = Double.parseDouble(textField_DienTich.getText());
+        double donGia = parseMoneyStringToDouble(textField_DonGia.getText());
+        double dienTich = parseMoneyStringToDouble(textField_DienTich.getText());
         LoaiNha loaiNha = (LoaiNha) comboBox_LoaiNha.getSelectedItem();
         String diaChi = textField_DiaChi.getText();
         int maNguoiMoGioi;
@@ -516,7 +527,6 @@ public class ViewQlNd extends JFrame implements DataObserver {
             textField_DonGia.setText("");
             textField_DienTich.setText("");
             comboBox_LoaiNha.setSelectedIndex(0);
-            textField_IDNMG.setText("");
         } catch (Exception ex) {
             // Show an error message if the data could not be updated
             JOptionPane.showMessageDialog(this, "Không thể cập nhật giao dịch nhà. Vui lòng thử lại!");
@@ -532,10 +542,10 @@ public class ViewQlNd extends JFrame implements DataObserver {
             Object[] rowData = {
                     giaoDich.getMaGiaoDich(),
                     giaoDich.getNgayGiaoDich(),
-                    giaoDich.getDonGia(),
-                    giaoDich.getDienTich(),
+                    formatMoney((float) giaoDich.getDonGia()),
+                    formatMoney((float) giaoDich.getDienTich()),
                     giaoDich.getLoaiDat(),
-                    giaoDich.getThanhTien()
+                    formatMoney((float) giaoDich.getThanhTien())
             };
             dtmDat.addRow(rowData); // Add each row of data to the table
         }
@@ -549,11 +559,11 @@ public class ViewQlNd extends JFrame implements DataObserver {
             Object[] rowData = {
                     giaoDich.getMaGiaoDich(),
                     giaoDich.getNgayGiaoDich(),
-                    giaoDich.getDonGia(),
+                    formatMoney((float) giaoDich.getDonGia()),
                     giaoDich.getLoaiNha(),
                     giaoDich.getDiaChi(),
-                    giaoDich.getDienTich(),
-                    giaoDich.getThanhTien()
+                    formatMoney((float) giaoDich.getDienTich()),
+                    formatMoney((float) giaoDich.getThanhTien())
             };
             dtmNha.addRow(rowData); // Add each row of data to the table
         }
@@ -576,7 +586,7 @@ public class ViewQlNd extends JFrame implements DataObserver {
     }
 
     //GetGiaoDichDatByMaGiaoDich
-    private void getGiaoDichDatByMaGiaoDich() {
+    private void getGiaoDichByMaGiaoDich() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         int maNguoiGiaoDich;
 
@@ -601,11 +611,14 @@ public class ViewQlNd extends JFrame implements DataObserver {
 
         if (giaoDich != null) {
 
+            double donGia = giaoDich.getDonGia();
+            float thanhTien = (float) giaoDich.getThanhTien();
+
             String message = "Ma Giao Dich: " + giaoDich.getMaGiaoDich() + "\n" +
                     "Ngay Giao Dich: " + giaoDich.getNgayGiaoDich() + "\n" +
-                    "Don Gia: " + giaoDich.getDonGia() + "\n" +
+                    "Don Gia: " + formatMoney((float) donGia) + "\n" +
                     "Dien Tich: " + giaoDich.getDienTich() + "\n" +
-                    "Thanh Tien: " + giaoDich.getThanhTien() + "\n";
+                    "Thanh Tien: " + formatMoney(thanhTien) + "\n";
 
             JOptionPane.showMessageDialog(this, message, "Thong tin giao dich", JOptionPane.INFORMATION_MESSAGE);
 
@@ -674,6 +687,25 @@ public class ViewQlNd extends JFrame implements DataObserver {
         String nha = "Giao dịch nhà: " + resultNha;
         String all = "Tổng giao dịch: " + resultAll;
         JOptionPane.showMessageDialog(this,title + "\n" + dat + "\n" + nha + "\n" + all);
+    }
+
+    private String formatMoney(float amount) {
+        if (amount >= 1_000_000_000) {;
+            return String.format("%,.0f ty", amount);
+        } else if (amount >= 1_000_000) {
+            return String.format("%,.0f tr", amount);
+        } else {
+            return String.format("%,.0f", amount);
+        }
+    }
+    private double parseMoneyStringToDouble(String moneyString) {
+        // Remove any non-numeric characters (except for the decimal point if present)
+        String numericString = moneyString.replaceAll("[^\\d.]", "");
+
+        // Parse the numeric string to a double
+        double amount = Double.parseDouble(numericString);
+
+        return amount;
     }
 }
 

@@ -21,9 +21,6 @@ public class GiaoDichNha extends GiaoDich {
         return diaChi;
     }
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
 
     public void setThanhTien(double thanhTien) {
         this.thanhTien = thanhTien;
