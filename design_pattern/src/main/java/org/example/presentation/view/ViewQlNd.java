@@ -276,7 +276,11 @@ public class ViewQlNd extends JFrame implements DataObserver {
         btn_Xoa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                softDeleteGiaoDich();
+                //use the confirm dialog to confirm before deleting
+                int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa giao dịch này không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    softDeleteGiaoDich();
+                }
             }
         });
 
@@ -449,8 +453,8 @@ public class ViewQlNd extends JFrame implements DataObserver {
     private void updateGiaoDichDat() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        double donGia = parseMoneyStringToDouble(textField_DonGia.getText());
-        double dienTich = parseMoneyStringToDouble(textField_DienTich.getText());
+        double donGia = parseStringToDouble(textField_DonGia.getText());
+        double dienTich = parseStringToDouble(textField_DienTich.getText());
         LoaiDat loaiDat = (LoaiDat) comboBox_LoaiDat.getSelectedItem();
         int maNguoiMoGioi;
         String idNMGText = textField_IDNMG.getText();
@@ -492,8 +496,8 @@ public class ViewQlNd extends JFrame implements DataObserver {
     private void updateGiaoDichNha() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        double donGia = parseMoneyStringToDouble(textField_DonGia.getText());
-        double dienTich = parseMoneyStringToDouble(textField_DienTich.getText());
+        double donGia = parseStringToDouble(textField_DonGia.getText());
+        double dienTich = parseStringToDouble(textField_DienTich.getText());
         LoaiNha loaiNha = (LoaiNha) comboBox_LoaiNha.getSelectedItem();
         String diaChi = textField_DiaChi.getText();
         int maNguoiMoGioi;
@@ -659,28 +663,23 @@ public class ViewQlNd extends JFrame implements DataObserver {
     }
     private void calculateAvgGiaoDich() {
         int maNguoiGiaoDich = Integer.parseInt(textField_IDNMG.getText());
-        float resultDat = controller.calculateGiaoDichDat(maNguoiGiaoDich);
-        float resultNha = controller.calculateGiaoDichNha(maNguoiGiaoDich);
-        float resultAll = controller.calculateGiaoDich(maNguoiGiaoDich);
-
-        // Format the result as a decimal number with two decimal places
-        String formattedResultDat = String.format("%,.0f tr", resultDat);
-        String formattedResultNha = String.format("%,.0f tr", resultNha);
-        String formattedResult = String.format("%,.0f tr", resultAll);
+        String resultDat = formatMoney(controller.calculateGiaoDichDat(maNguoiGiaoDich));
+        String resultNha = formatMoney(controller.calculateGiaoDichNha(maNguoiGiaoDich));
+        String resultAll = formatMoney(controller.calculateGiaoDich(maNguoiGiaoDich));
 
         // Display the formatted result in a JOptionPane message dialog
         String title = "Tổng tiền giao dịch của người mô giới có mã " + maNguoiGiaoDich + " là: ";
-        String dat = "Giao dịch đất: " + formattedResultDat;
-        String nha = "Giao dịch nhà: " + formattedResultNha;
-        String all = "Tổng giao dịch: " + formattedResult;
+        String dat = "Giao dịch đất: " + resultDat;
+        String nha = "Giao dịch nhà: " + resultNha;
+        String all = "Tổng giao dịch: " + resultAll;
         JOptionPane.showMessageDialog(this,title + "\n" + dat + "\n" + nha + "\n" + all);
     }
 
     private void amountGiaoDich(){
         int maNguoiGiaoDich = Integer.parseInt(textField_IDNMG.getText());
-        int resultDat = controller.amountGiaoDichDat(maNguoiGiaoDich);
-        int resultNha = controller.amountGiaoDichNha(maNguoiGiaoDich);
-        int resultAll = controller.amountGiaoDich(maNguoiGiaoDich);
+        String resultDat = formatMoney(controller.amountGiaoDichDat(maNguoiGiaoDich));
+        String resultNha = formatMoney(controller.amountGiaoDichNha(maNguoiGiaoDich));
+        String resultAll = formatMoney(controller.amountGiaoDich(maNguoiGiaoDich));
 
         String title = "Số lượng giao dịch của người mô giới có mã " + maNguoiGiaoDich + " là: ";
         String dat = "Giao dịch đất: " + resultDat;
@@ -691,21 +690,20 @@ public class ViewQlNd extends JFrame implements DataObserver {
 
     private String formatMoney(float amount) {
         if (amount >= 1_000_000_000) {;
-            return String.format("%,.0f ty", amount);
+            return String.format("%,.0f tỷ", amount);
         } else if (amount >= 1_000_000) {
             return String.format("%,.0f tr", amount);
         } else {
             return String.format("%,.0f", amount);
         }
     }
-    private double parseMoneyStringToDouble(String moneyString) {
+    private double parseStringToDouble(String moneyString) {
         // Remove any non-numeric characters (except for the decimal point if present)
         String numericString = moneyString.replaceAll("[^\\d.]", "");
 
         // Parse the numeric string to a double
-        double amount = Double.parseDouble(numericString);
 
-        return amount;
+        return Double.parseDouble(numericString);
     }
 }
 
