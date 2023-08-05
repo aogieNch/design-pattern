@@ -15,12 +15,14 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class UserView extends JFrame {
 
     private JPanel contentPane;
     private JTextField textField_TenDangNhap;
-    private JTextField textField_MkDangNhap;
+    private JPasswordField textField_MkDangNhap;
     private UserController controller;
 
     public UserView(UserController controller) {
@@ -61,7 +63,7 @@ public class UserView extends JFrame {
         label_MkDangNhap_1.setBounds(52, 176, 82, 14);
         contentPane.add(label_MkDangNhap_1);
 
-        textField_MkDangNhap = new JTextField();
+        textField_MkDangNhap = new JPasswordField();
         textField_MkDangNhap.setColumns(10);
         textField_MkDangNhap.setBounds(144, 173, 167, 20);
         contentPane.add(textField_MkDangNhap);
@@ -96,9 +98,13 @@ public class UserView extends JFrame {
     // Modify login() method to retrieve the user ID and pass it to loadData()
     private void login() {
         String username = textField_TenDangNhap.getText();
-        String password = textField_MkDangNhap.getText();
+        char[] passwordCharArray = textField_MkDangNhap.getPassword();
+        String password = new String(passwordCharArray); // Convert char array to String
 
-        boolean loginSuccess = controller.checkLogin(username, password);
+        // Hash the password using a hashing algorithm (e.g., SHA-256)
+        String hashedPassword = hashPassword(password);
+
+        boolean loginSuccess = controller.checkLogin(username, hashedPassword);
         if (loginSuccess) {
             int userId = controller.getMaNguoiMoGioi(username); // Replace this with the correct method to get the user ID by username
             this.setVisible(false);
@@ -106,6 +112,23 @@ public class UserView extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu");
         }
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes());
+
+            // Convert the byte array to a hexadecimal representation
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Modify loadData() method to accept the userId as a parameter
