@@ -11,7 +11,6 @@ import java.util.List;
 public class GiaoDichGateWayImp implements GiaoDichGateWay {
 
     private Connection connection;
-    private final List<DataObserver> observers = new ArrayList<>();
 
     public GiaoDichGateWayImp() {
         String dbUrl = "jdbc:sqlserver://localhost:1433;databaseName=quanlygiaodich;integratedSecurity=true;trustServerCertificate=true;";
@@ -24,16 +23,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         }
     }
 
-    @Override
-    public void registerObserver(DataObserver observer){
-        observers.add(observer);
-    }
-
-    public void notifyObservers() {
-        for (DataObserver observer : observers) {
-            observer.onDataChanged();
-        }
-    }
     //Fetch data from database
     @Override
     public List<GiaoDichDat> getGiaoDichDatByUserId(int maNguoiGiaoDich) {
@@ -136,7 +125,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        notifyObservers();
     }
 
     @Override
@@ -165,7 +153,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        notifyObservers();
     }
 
     //Update Giao dich
@@ -190,7 +177,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
             updateGiaoDichDatStmt.setInt(2, giaoDichDat.getMaGiaoDich());
             updateGiaoDichDatStmt.executeUpdate();
 
-            notifyObservers();
             System.out.println("Cập nhật giao dịch đất thành công.");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,7 +205,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
             updateGiaoDichNhaStmt.setInt(3, giaoDichNha.getMaGiaoDich());
             updateGiaoDichNhaStmt.executeUpdate();
 
-            notifyObservers();
             System.out.println("Cập nhật giao dịch Nhà thành công.");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -331,7 +316,6 @@ public class GiaoDichGateWayImp implements GiaoDichGateWay {
                 // Handle the case when the maGiaoDich doesn't exist in any table
                 System.out.println("GiaoDich not found.");
             }
-            notifyObservers();
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle the exception if needed

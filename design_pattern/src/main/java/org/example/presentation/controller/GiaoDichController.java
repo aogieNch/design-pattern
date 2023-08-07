@@ -4,7 +4,6 @@ import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
 import org.example.domain.model.service.GiaoDichService;
-import org.example.presentation.view.ViewQlNd;
 
 import java.util.List;
 

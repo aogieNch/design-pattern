@@ -18,13 +18,17 @@ import org.example.domain.command.updateGiaoDich.UpdateGiaoDichNha;
 import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
+import org.example.observer.DataObserver;
 import org.example.persistence.GiaoDichDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GiaoDichServiceImp implements GiaoDichService {
 
     private final GiaoDichDAO giaoDichDAO;
+    private final List<DataObserver> observers = new ArrayList<>();
+    boolean isChanged = false;
 
     public GiaoDichServiceImp(GiaoDichDAO giaoDichDAO) {
         this.giaoDichDAO = giaoDichDAO;
@@ -51,11 +55,15 @@ public class GiaoDichServiceImp implements GiaoDichService {
     public void addGiaoDichDat(GiaoDichDat giaoDichDat) {
         Command addGiaoDichDat = new AddGiaoDichDat(giaoDichDAO, giaoDichDat);
         addGiaoDichDat.execute();
+        isChanged = true;
+        notifyObservers();
     }
     @Override
     public void addGiaoDichNha(GiaoDichNha giaoDichNha) {
         Command addGiaoDichNha = new AddGiaoDichNha(giaoDichDAO, giaoDichNha);
         addGiaoDichNha.execute();
+        isChanged = true;
+        notifyObservers();
     }
 
     //UpdateGiaoDich
@@ -63,11 +71,15 @@ public class GiaoDichServiceImp implements GiaoDichService {
     public void updateGiaoDichDat(GiaoDichDat giaoDichDat) {
         UpdateGiaoDichDat updateGiaoDichDat = new UpdateGiaoDichDat(giaoDichDAO, giaoDichDat);
         updateGiaoDichDat.execute();
+        isChanged = true;
+        notifyObservers();
     }
     @Override
     public void updateGiaoDichNha(GiaoDichNha giaoDichNha) {
         UpdateGiaoDichNha updateGiaoDichNha = new UpdateGiaoDichNha(giaoDichDAO, giaoDichNha);
         updateGiaoDichNha.execute();
+        isChanged = true;
+        notifyObservers();
     }
 
     //GetGiaoDich
@@ -83,6 +95,8 @@ public class GiaoDichServiceImp implements GiaoDichService {
     public void softDeleteGiaoDich(int maGiaoDich, int maNguoiGiaoDich) {
         SoftDeleteGiaoDich softDeleteGiaoDich = new SoftDeleteGiaoDich(giaoDichDAO, maGiaoDich, maNguoiGiaoDich);
         softDeleteGiaoDich.execute();
+        isChanged = true;
+        notifyObservers();
     }
 
     //CalculateAvgGiaoDichDat
@@ -125,6 +139,16 @@ public class GiaoDichServiceImp implements GiaoDichService {
         return amountGiaoDich.getResult();
     }
 
-
-
+    @Override
+    public void registerObserver(DataObserver observer) {
+        observers.add(observer);
+    }
+    public void notifyObservers() {
+        if (isChanged){
+            for (DataObserver observer : observers) {
+                observer.onDataChanged();
+            }
+        }
+        isChanged = false;
+    }
 }

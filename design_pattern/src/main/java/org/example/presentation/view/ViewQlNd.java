@@ -365,8 +365,8 @@ public class ViewQlNd extends JFrame implements DataObserver {
     private void addGiaoDichDat() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        double donGia = Double.parseDouble(textField_DonGia.getText());
-        double dienTich = Double.parseDouble(textField_DienTich.getText());
+        double donGia = parseStringToDouble(textField_DonGia.getText());
+        double dienTich = parseStringToDouble(textField_DienTich.getText());
         LoaiDat loaiDat = (LoaiDat) comboBox_LoaiDat.getSelectedItem();
 
         int maNguoiMoGioi;
@@ -408,8 +408,8 @@ public class ViewQlNd extends JFrame implements DataObserver {
     private void addGiaoDichNha() {
         int maGiaoDich = Integer.parseInt(textField_Id.getText());
         LocalDate ngayGiaoDich = LocalDate.parse(textField_NgayGD.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        double donGia = Double.parseDouble(textField_DonGia.getText());
-        double dienTich = Double.parseDouble(textField_DienTich.getText());
+        double donGia = parseStringToDouble(textField_DonGia.getText());
+        double dienTich = parseStringToDouble(textField_DienTich.getText());
         LoaiNha loaiNha = (LoaiNha) comboBox_LoaiNha.getSelectedItem();
         String diaChi = textField_DiaChi.getText();
 

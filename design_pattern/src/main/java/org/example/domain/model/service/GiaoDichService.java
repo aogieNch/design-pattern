@@ -3,6 +3,7 @@ package org.example.domain.model.service;
 import org.example.domain.model.GiaoDich;
 import org.example.domain.model.GiaoDichDat;
 import org.example.domain.model.GiaoDichNha;
+import org.example.observer.DataObserver;
 
 import java.util.List;
 
@@ -34,4 +35,6 @@ public interface GiaoDichService {
     int amountGiaoDichDat(int maNguoiGiaoDich);
     int amountGiaoDichNha(int maNguoiGiaoDich);
     int amountGiaoDich(int maNguoiGiaoDich);
+
+    void registerObserver(DataObserver observer);
 }

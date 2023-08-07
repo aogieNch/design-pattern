@@ -140,7 +140,7 @@ public class UserView extends JFrame {
 
         ViewQlNd view = new ViewQlNd(giaoDichController);
 
-        giaoDichGateWayImp.registerObserver(view);
+        giaoDichService.registerObserver(view);
 
         view.setVisible(true);
     }

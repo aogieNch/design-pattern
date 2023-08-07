@@ -35,7 +35,4 @@ public interface GiaoDichGateWay {
     int amountGiaoDichDat(int maNguoiGiaoDich);
     int amountGiaoDichNha(int maNguoiGiaoDich);
     int amountGiaoDich(int maNguoiGiaoDich);
-
-    //Observer
-    void registerObserver(DataObserver observer);
 }
