@@ -6,7 +6,7 @@ import org.example.persistence.GiaoDichDAO;
 
 public class AddGiaoDichNha implements Command {
     private final GiaoDichDAO giaoDichDAO;
-    private GiaoDichNha giaoDichNha;
+    private final GiaoDichNha giaoDichNha;
 
     public AddGiaoDichNha(GiaoDichDAO giaoDichDAO, GiaoDichNha giaoDichNha) {
         this.giaoDichDAO = giaoDichDAO;

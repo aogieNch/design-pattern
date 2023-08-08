@@ -8,9 +8,8 @@ import java.util.List;
 
 public class GetGiaoDichNha implements Command {
     private final GiaoDichDAO giaoDichDAO;
-    private int maNguoiGiaoDich;
+    private final int maNguoiGiaoDich;
     private List<GiaoDichNha> giaoDichNhaList;
-
     public GetGiaoDichNha(GiaoDichDAO giaoDichDAO, int maNguoiGiaoDich) {
         this.giaoDichDAO = giaoDichDAO;
         this.maNguoiGiaoDich = maNguoiGiaoDich;

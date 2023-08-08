@@ -7,8 +7,8 @@ import org.example.persistence.GiaoDichDAO;
 import java.util.List;
 
 public class GetGiaoDichDat implements Command {
-    private GiaoDichDAO giaoDichDAO;
-    private int maNguoiGiaoDich;
+    private final GiaoDichDAO giaoDichDAO;
+    private final int maNguoiGiaoDich;
     private List<GiaoDichDat> giaoDichDatList;
 
     public GetGiaoDichDat(GiaoDichDAO giaoDichDAO, int maNguoiGiaoDich) {
